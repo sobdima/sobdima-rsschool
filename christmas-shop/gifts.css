@@ -1,0 +1,246 @@
+* {
+  font-size: 10px;
+  scroll-behavior: smooth;
+}
+
+body {
+  /* background-color: #c0c0c0; */
+  background-color: #FFFFFF;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+
+header {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 82px;
+  background-color: #FFFFFF;
+}
+@media (max-width: 768px) {
+  header {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.header__menu {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  font-family: Montserrat;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 130%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #181C29;
+}
+.header__logo:hover {
+  cursor: pointer;
+}
+
+.header__navigation {
+  display: flex;
+  gap: 8px;
+}
+.header__navigation a {
+  padding: 12px 20px;
+  font-family: Montserrat;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 130%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #181C29;
+}
+.header__navigation a:hover {
+  background-color: rgba(255, 70, 70, 0.1019607843);
+  border-radius: 12px;
+  color: #FF4646;
+}
+.header__navigation .active {
+  background-color: rgba(255, 70, 70, 0.1019607843);
+  border-radius: 12px;
+  color: #FF4646;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .header__navigation {
+    display: none;
+  }
+}
+
+.burger {
+  display: none;
+  position: relative;
+  width: 40px;
+}
+.burger::after {
+  content: "";
+  width: 20px;
+  height: 1px;
+  position: absolute;
+  bottom: 15.5px;
+  right: calc(50% - 10px);
+  background-color: #181C29;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+.burger::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  position: absolute;
+  top: 15.5px;
+  right: calc(50% - 10px);
+  background-color: #181C29;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+@media (max-width: 768px) {
+  .burger {
+    display: inline-block;
+  }
+}
+
+.footer {
+  max-width: 1440px;
+  margin: auto;
+  padding: 60px 82px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .footer {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.contacts {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+@media (max-width: 1188px) {
+  .contacts {
+    flex-direction: column;
+  }
+}
+
+.contacts__card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  background-color: #ECF3F8;
+  border-radius: 20px;
+}
+.contacts__card:hover {
+  cursor: pointer;
+}
+.contacts__card:hover .contacts__link {
+  color: #FF4646;
+}
+.contacts__card:hover .contacts__label {
+  color: #FF4646;
+}
+@media (max-width: 1024px) {
+  .contacts__card:hover {
+    cursor: default;
+  }
+  .contacts__card:hover .contacts__link {
+    color: #181C29;
+  }
+  .contacts__card:hover .contacts__label {
+    color: #181C29;
+  }
+}
+.contacts__card .contacts__link {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36.48px;
+  letter-spacing: 3.84px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #181C29;
+  text-decoration: none;
+}
+.contacts__card .contacts__label {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24.32px;
+  letter-spacing: 1.28px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #181C29;
+}
+
+.link-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.link-container .link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.link-container .link:hover path {
+  stroke: #FF4646;
+}
+@media (max-width: 1024px) {
+  .link-container .link:hover path {
+    stroke: #181C29;
+  }
+}
+
+.social {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.social .paragraph {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: center;
+  color: #181C29;
+}
+.social .rsschool-link {
+  font-family: Allura;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  color: #181C29;
+  text-decoration: none;
+}
+.social .rsschool-link:hover {
+  color: #FF4646;
+}
+
+/*# sourceMappingURL=gifts.css.map */

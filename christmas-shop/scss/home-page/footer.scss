@@ -1,0 +1,111 @@
+.footer {
+    @include container-style($static-white, 60px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+}
+
+
+.contacts {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+
+    @media (max-width: 1188px) {
+        flex-direction: column;
+    }
+}
+
+
+.contacts__card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    flex: 1;
+
+    background-color: $content-background;
+    border-radius: 20px;
+
+    &:hover {
+        cursor: pointer;
+
+        .contacts__link {
+            color: $primary;
+        }
+
+        .contacts__label {
+            color: $primary;
+        }
+
+        @include media-desktop-transit {
+            cursor: default;
+
+            .contacts__link {
+                color: $dark;
+            }
+    
+            .contacts__label {
+                color: $dark;
+            }
+        }
+    }
+
+    .contacts__link {
+        @include header(24px, 600, 36.48px, 3.84px, center, $dark);
+        text-decoration: none;
+    }
+
+    .contacts__label {
+        @include header (16px, 600, 24.32px, 1.28px, center, $dark);
+    }
+}
+
+
+.link-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+
+    .link {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+
+        &:hover {
+            path {
+                stroke: $primary;
+                @include media-desktop-transit {
+                    stroke: $dark;
+                }
+            }
+        }
+    }
+}
+
+
+.social {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .paragraph {
+        @include paragraph($dark, center);
+    }
+
+    .rsschool-link {
+        @include caption($dark);
+        text-decoration: none;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 header {
     @include container-style($static-white);
+    position: relative;
 }
 
 
@@ -18,6 +19,9 @@ header {
     @include action-small(600, $dark);
     &:hover {
         cursor: pointer;
+        @include media-tablet {
+            cursor: default;
+        }
     }
 }
 
@@ -38,39 +42,5 @@ header {
 
     @include media-tablet {
         display: none;
-    }
-}
-
-
-.burger {
-    display: none;
-    position: relative;
-    width: 40px;
-
-    &::after {
-        content: "";
-        width: 20px;
-        height: 1px;
-        position: absolute;
-        bottom: calc( 16px - 0.5px );
-        right: calc( 50% - 10px );
-        background-color: $dark; 
-        border-radius: 1px;
-        transition: all 0.3s ease;
-    }
-    &::before {
-        content: "";
-        width: 20px;
-        height: 1px;
-        position: absolute;
-        top: calc( 16px - 0.5px );
-        right: calc( 50% - 10px );
-        background-color: $dark; 
-        border-radius: 1px;
-        transition: all 0.3s ease;
-    }
-
-    @include media-tablet {
-        display: inline-block;
     }
 }

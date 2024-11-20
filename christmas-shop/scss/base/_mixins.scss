@@ -4,6 +4,11 @@
     padding: $padding-top-bot 82px;
     background-color: $bg-color;
 
+    @media (max-width: 796px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
     @include media-tablet() {
         padding-left: 8px;
         padding-right: 8px;

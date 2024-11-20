@@ -56,13 +56,13 @@
     .card__tag {
         @include header(12px, 600, 15.6px, 0.6px, left, $dark);
     }
-    #purple {
+    .card__tag_purple {
         color: $tag-purple;
     }
-    #green {
+    .card__tag_green {
         color: $tag-green;
     }
-    #pink {
+    .card__tag_pink {
         color: $tag-pink;
     }
 

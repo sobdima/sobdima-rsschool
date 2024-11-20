@@ -30,6 +30,7 @@
     .button {
         @include button();
         @include action-small(500, $static-white);
+
         transition: all 0.3s ease;
 
         &:hover {

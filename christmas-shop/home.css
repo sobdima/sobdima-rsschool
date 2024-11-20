@@ -4,8 +4,8 @@
 }
 
 body {
-  /* background-color: #c0c0c0; */
   background-color: #FFFFFF;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, p {
@@ -17,6 +17,13 @@ header {
   margin: auto;
   padding: 0 82px;
   background-color: #FFFFFF;
+  position: relative;
+}
+@media (max-width: 796px) {
+  header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 @media (max-width: 768px) {
   header {
@@ -48,6 +55,11 @@ header {
 .header__logo:hover {
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .header__logo:hover {
+    cursor: default;
+  }
+}
 
 .header__navigation {
   display: flex;
@@ -73,6 +85,48 @@ header {
   .header__navigation {
     display: none;
   }
+}
+
+.burger-menu {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 64px;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  transform: translateX(100%);
+  transition: all 0.6s ease-out;
+}
+@media (max-width: 768px) {
+  .burger-menu {
+    display: inline-flex;
+  }
+}
+
+.burger-menu_visible {
+  transform: translateX(0);
+}
+
+.burger__navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.burger__navigation a {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36.48px;
+  letter-spacing: 3.84px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #181C29;
+  text-decoration: none;
+  padding: 12px 20px;
 }
 
 .burger {
@@ -108,6 +162,19 @@ header {
   }
 }
 
+.burger_cross::after {
+  transform-origin: left;
+  transform: rotate(-45deg) translate(0px, 4px);
+}
+.burger_cross::before {
+  transform-origin: left;
+  transform: rotate(45deg) translate(0px, -4px);
+}
+
+.disable-scrolling {
+  overflow: hidden;
+}
+
 .hero {
   max-width: 1440px;
   margin: auto;
@@ -119,6 +186,12 @@ header {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+@media (max-width: 796px) {
+  .hero {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 @media (max-width: 768px) {
   .hero {
@@ -194,6 +267,12 @@ header {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+@media (max-width: 796px) {
+  .about {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 @media (max-width: 768px) {
   .about {
@@ -298,6 +377,12 @@ header {
   background-repeat: no-repeat;
   background-size: cover;
 }
+@media (max-width: 796px) {
+  .slider-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
 @media (max-width: 768px) {
   .slider-section {
     padding-left: 8px;
@@ -334,6 +419,7 @@ header {
   display: flex;
   align-items: center;
   gap: 20px;
+  transition: transform 0.3s ease;
 }
 .slider-container .slider-text {
   font-family: Montserrat;
@@ -400,6 +486,12 @@ header {
   background-repeat: no-repeat;
   background-size: cover;
 }
+@media (max-width: 796px) {
+  .best-gifts {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
 @media (max-width: 768px) {
   .best-gifts {
     padding-left: 8px;
@@ -454,13 +546,13 @@ header {
   text-align: left;
   color: #181C29;
 }
-.card #purple {
+.card .card__tag_purple {
   color: #4361FF;
 }
-.card #green {
+.card .card__tag_green {
   color: #06A44F;
 }
-.card #pink {
+.card .card__tag_pink {
   color: #FF43F7;
 }
 .card .card__header {
@@ -485,6 +577,12 @@ header {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+@media (max-width: 796px) {
+  .cta {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 @media (max-width: 768px) {
   .cta {
@@ -615,6 +713,12 @@ header {
   gap: 60px;
   align-items: center;
 }
+@media (max-width: 796px) {
+  .footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
 @media (max-width: 768px) {
   .footer {
     padding-left: 8px;
@@ -627,7 +731,7 @@ header {
   gap: 12px;
   width: 100%;
 }
-@media (max-width: 1188px) {
+@media (max-width: 1210px) {
   .contacts {
     flex-direction: column;
   }
@@ -642,6 +746,7 @@ header {
   flex: 1;
   background-color: #ECF3F8;
   border-radius: 20px;
+  text-decoration: none;
 }
 .contacts__card:hover {
   cursor: pointer;
@@ -672,7 +777,6 @@ header {
   text-transform: uppercase;
   text-align: center;
   color: #181C29;
-  text-decoration: none;
 }
 .contacts__card .contacts__label {
   font-family: Montserrat;

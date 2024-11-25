@@ -1,6 +1,4 @@
-@import 'node_modules/modern-normalize/modern-normalize.css';
 * {
-  box-sizing: border-box;
   font-size: 10px;
   scroll-behavior: smooth;
 }

@@ -1,0 +1,86 @@
+header {
+    @include container-style($static-white);
+}
+
+
+.header__menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    @include action-small(600, $dark);
+    &:hover {
+        cursor: pointer;
+        @include media-tablet {
+            cursor: default;
+        }
+    }
+}
+
+
+.header__navigation {
+    display: flex;
+    gap: 8px;
+
+    a {
+        padding: 12px 20px;
+        @include action-small(600, $dark);
+        &:hover {
+            background-color: $primary-10;
+            border-radius: 12px;
+            color: $primary;
+        }
+    }
+
+    .active {
+        background-color: $primary-10;
+        border-radius: 12px;
+        color: $primary;
+        pointer-events: none;
+    }
+
+    @include media-tablet {
+        display: none;
+    }
+}
+
+
+.burger {
+    display: none;
+    position: relative;
+    width: 40px;
+
+    &::after {
+        content: "";
+        width: 20px;
+        height: 1px;
+        position: absolute;
+        bottom: calc( 16px - 0.5px );
+        right: calc( 50% - 10px );
+        background-color: $dark;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
+    &::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        position: absolute;
+        top: calc( 16px - 0.5px );
+        right: calc( 50% - 10px );
+        background-color: $dark;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
+
+    @include media-tablet {
+        display: inline-block;
+    }
+}

@@ -1,0 +1,72 @@
+.best-gifts {
+    @include container-style($primary, 60px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.cards-container {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+
+.card {
+    width: 310px;
+    height: 342px;
+    border-radius: 20px;
+    background-color: $content-background;
+
+    &:hover {
+        cursor: pointer;
+
+        .card__header {
+            color: $primary;
+        }
+
+        @include media-desktop-transit {
+            cursor: default;
+
+            .card__header {
+                color: $dark;
+            }
+        }
+    }
+
+    .card__label {
+        width: 100%;
+        height: 112px;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: $static-white;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card__tag {
+        @include header(12px, 600, 15.6px, 0.6px, left, $dark);
+    }
+    .card__tag_purple {
+        color: $tag-purple;
+    }
+    .card__tag_green {
+        color: $tag-green;
+    }
+    .card__tag_pink {
+        color: $tag-pink;
+    }
+
+    .card__header {
+        @include header(16px, 600, 24.32px, 1.28px, left, $dark);
+    }
+}

@@ -1,0 +1,115 @@
+@mixin container-style($bg-color, $padding-top-bot: 0) {
+    max-width: 1440px;
+    margin: auto;
+    padding: $padding-top-bot 82px;
+    background-color: $bg-color;
+
+    @media (max-width: 796px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    @include media-tablet() {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+
+
+//Typography
+@mixin header($size, $weight, $height, $spacing, $align, $color) {
+    font-family: Montserrat;
+    font-size: $size;
+    font-weight: $weight;
+    line-height: $height;
+    letter-spacing: $spacing;
+    text-transform: uppercase;
+    text-align: $align;
+    color: $color;
+}
+
+@mixin action-small($weight: 600, $font-color: $dark) {
+    font-family: Montserrat;
+    font-size: 1.2rem;
+    font-weight: $weight;
+    line-height: 130%;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $font-color;
+}
+
+@mixin caption($font-color) {
+    font-family: Allura;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.05em;
+    text-align: center;
+    color: $font-color;
+}
+
+@mixin paragraph($font-color: $dark, $align: left) {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23.68px;
+    text-align: $align;
+    color: $font-color;
+}
+
+@mixin slider-text() {
+    font-family: Montserrat;
+    font-size: 80px;
+    font-weight: 600;
+    line-height: 97.52px;
+    text-align: center;
+    text-transform: uppercase;
+    color: $static-white;
+}
+
+
+
+
+
+//Buttons
+@mixin button() {
+    width: 235px;
+    height: 56px;
+    padding: 20px 32px;
+    border: none;
+    border-radius: 20px;
+    background-color: $dark;
+}
+
+@mixin slider-button($border-color) {
+    width: 56px;
+    height: 56px;
+    background: none;
+    border: 1px solid $border-color;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+@mixin media-desktop {
+    @media (max-width: 1440px) { @content; }
+}
+@mixin media-desktop-transit {
+    @media (max-width: 1024px) { @content; }
+}
+@mixin media-tablet {
+    @media (max-width: 768px) { @content; }
+}
+@mixin media-tablet-transit {
+    @media (max-width: 767px) { @content; }
+}
+@mixin media-mobile {
+    @media (max-width: 380px) { @content; }
+}

@@ -1,0 +1,76 @@
+.slider-section {
+    @include container-style($primary, 60px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+
+    background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.section-title {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .caption {
+        @include caption($static-white);
+    }
+
+    .title {
+        @include header(24px, 600, 36.48px, 3.84px, center, $static-white);
+    }
+}
+
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease;
+
+    .slider-text {
+        @include slider-text;
+    }
+
+    .slider-image {
+        border-radius: 20px;
+    }
+}
+
+
+.slider-buttons-container {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+
+    .slider-button {
+
+        &.active {
+            @include slider-button(#FFFFFF);
+            path {
+                stroke-opacity: 1;
+            }
+            &:hover {
+                background-color: $static-white;
+                cursor: pointer;
+                path { stroke: $primary; }
+
+                @include media-desktop-transit {
+                    background: none;
+                    cursor: default;
+                    path { stroke: $static-white; }
+                }
+            }
+        }
+
+        &.inactive {
+            @include slider-button($static-white-40);
+        }
+    }
+}

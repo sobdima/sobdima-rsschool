@@ -1,0 +1,147 @@
+.gifts {
+    @include container-style($primary, 60px);
+
+    border-radius: 20px;
+
+    background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-garland.png");
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* position: relative; */
+}
+
+
+.title {
+    @include header(3.2rem, 600, 150%, 0.18em, center, $static-white);
+
+    max-width: 426px;
+}
+
+
+.tabs-container {
+    display: flex;
+    gap: 8px;
+
+    @include media-tablet-transit {
+        gap: 0;
+    }
+}
+
+
+.tab {
+    @include action-small(600, $static-white);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background-color: transparent;
+
+    @include media-tablet-transit {
+        padding: 12px 8px;
+    }
+
+    &:hover {
+        background-color: $static-white-20;
+        cursor: pointer;
+        @include media-desktop-transit {
+            background-color: transparent;
+            
+            cursor: default;
+        }
+    }
+}
+
+
+.tab_active {
+    background-color: $static-white-20;
+    
+    &:hover {
+        background-color: $static-white-20;
+        cursor: default;
+    }
+}
+
+
+.cards-container {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+
+.card {
+    width: 310px;
+    height: 342px;
+    border-radius: 20px;
+    background-color: $content-background;
+
+    &:hover {
+        cursor: pointer;
+
+        .card__header {
+            color: $primary;
+        }
+
+        @include media-desktop-transit {
+            cursor: default;
+
+            .card__header {
+                color: $dark;
+            }
+        }
+    }
+
+    .card__label {
+        width: 100%;
+        height: 112px;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: $static-white;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card__tag {
+        @include header(12px, 600, 15.6px, 0.6px, left, $dark);
+    }
+    .card__tag_purple {
+        color: $tag-purple;
+    }
+    .card__tag_green {
+        color: $tag-green;
+    }
+    .card__tag_pink {
+        color: $tag-pink;
+    }
+
+    .card__header {
+        @include header(16px, 600, 24.32px, 1.28px, left, $dark);
+    }
+}
+
+
+.back-to-top {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    border: 1px solid $primary;
+    border-radius: 100px;
+    background-color: $static-white;
+    z-index: 99;
+
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+
+    @include media-tablet {
+        display: flex;
+    }
+}

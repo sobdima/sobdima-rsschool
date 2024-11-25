@@ -1,0 +1,46 @@
+header {
+    @include container-style($static-white);
+    position: relative;
+}
+
+
+.header__menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    @include action-small(600, $dark);
+    &:hover {
+        cursor: pointer;
+        @include media-tablet {
+            cursor: default;
+        }
+    }
+}
+
+
+.header__navigation {
+    display: flex;
+    gap: 8px;
+
+    a {
+        padding: 12px 20px;
+        @include action-small(600, $dark);
+        &:hover {
+            background-color: $primary-10;
+            border-radius: 12px;
+            color: $primary;
+        }
+    }
+
+    @include media-tablet {
+        display: none;
+    }
+}

@@ -1,0 +1,97 @@
+.cta {
+    @include container-style($primary, 60px);
+
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png"), url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-forest.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.cta__container {
+    max-width: 426px;
+    margin: auto;
+    padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .cta__header {
+        padding-top: 60px;
+        @include header(24px, 600, 36.48px, 3.84px, center, $static-white);
+    }
+
+    .button {
+        @include button;
+        @include action-small(500, $static-white);
+
+        &:hover {
+            background-color: $static-white;
+            color: $dark; 
+            cursor: pointer;
+            
+            @include media-desktop-transit {
+                 background-color: $dark;
+                 color: $static-white;
+                 cursor: default;
+            }
+         }
+    }
+}
+
+
+
+.timer-container {
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .caption {
+       @include caption($static-white); 
+    }
+}
+
+
+.timer {
+    display: flex;
+    justify-content: center;
+    padding: 8px 12px 12px 12px;
+    background-color: $static-white-40;
+    border-radius: 20px;
+
+    .timer__cell {
+        width: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        position: relative;
+
+        &::after {
+            position: absolute;
+            content: "";
+            bottom: 16px;
+            right: 0;
+            width: 1px;
+            height: 20px;
+            background-color: $static-white-40;
+        }
+
+        &:last-child {
+            position: static;
+        }
+    }
+
+    .time {
+        @include header(24px, 600, 36.48px, 3.84px, center, $static-white);
+    }
+
+    .timer__label {
+        @include header(12px, 600, 15.6px, 0.6px, center, $static-white);
+    }
+}

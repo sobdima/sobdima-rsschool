@@ -81,6 +81,7 @@
     border: none;
     border-radius: 20px;
     background-color: $dark;
+    transition: all 0.3s ease;
 }
 
 @mixin slider-button($border-color) {

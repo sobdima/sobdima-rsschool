@@ -235,6 +235,7 @@ header {
   border: none;
   border-radius: 20px;
   background-color: #181C29;
+  transition: all 0.3s ease;
   font-family: Montserrat;
   font-size: 1.2rem;
   font-weight: 500;
@@ -243,7 +244,6 @@ header {
   text-transform: uppercase;
   text-decoration: none;
   color: #FFFFFF;
-  transition: all 0.3s ease;
 }
 .hero__container .button:hover {
   background-color: #FFFFFF;
@@ -618,6 +618,7 @@ header {
   border: none;
   border-radius: 20px;
   background-color: #181C29;
+  transition: all 0.3s ease;
   font-family: Montserrat;
   font-size: 1.2rem;
   font-weight: 500;

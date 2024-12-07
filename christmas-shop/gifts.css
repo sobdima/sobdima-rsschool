@@ -17,6 +17,7 @@ header {
   margin: auto;
   padding: 0 82px;
   background-color: #FFFFFF;
+  position: relative;
 }
 @media (max-width: 796px) {
   header {
@@ -80,6 +81,12 @@ header {
   border-radius: 12px;
   color: #FF4646;
 }
+@media (hover: none) and (pointer: coarse) {
+  .header__navigation a:hover {
+    background-color: transparent;
+    color: #181C29;
+  }
+}
 .header__navigation .active {
   background-color: rgba(255, 70, 70, 0.1019607843);
   border-radius: 12px;
@@ -123,6 +130,94 @@ header {
   .burger {
     display: inline-block;
   }
+}
+
+.burger-menu {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 64px;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  transform: translateX(100%);
+  transition: all 0.6s ease-out;
+}
+@media (max-width: 768px) {
+  .burger-menu {
+    display: inline-flex;
+  }
+}
+
+.burger-menu_visible {
+  transform: translateX(0);
+}
+
+.burger__navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.burger__navigation a {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 36.48px;
+  letter-spacing: 3.84px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #181C29;
+  text-decoration: none;
+  padding: 12px 20px;
+}
+
+.burger {
+  display: none;
+  position: relative;
+  width: 40px;
+}
+.burger::after {
+  content: "";
+  width: 20px;
+  height: 1px;
+  position: absolute;
+  bottom: 15.5px;
+  right: calc(50% - 10px);
+  background-color: #181C29;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+.burger::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  position: absolute;
+  top: 15.5px;
+  right: calc(50% - 10px);
+  background-color: #181C29;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+@media (max-width: 768px) {
+  .burger {
+    display: inline-block;
+  }
+}
+
+.burger_cross::after {
+  transform-origin: left;
+  transform: rotate(-45deg) translate(0px, 4px);
+}
+.burger_cross::before {
+  transform-origin: left;
+  transform: rotate(45deg) translate(0px, -4px);
+}
+
+.disable-scrolling {
+  overflow: hidden;
 }
 
 .gifts {
@@ -294,11 +389,9 @@ header {
   position: fixed;
   bottom: 8px;
   right: 8px;
-}
-@media (max-width: 768px) {
-  .back-to-top {
-    display: flex;
-  }
+  /* @include media-tablet {
+      display: flex;
+  } */
 }
 
 .footer {
@@ -434,6 +527,167 @@ header {
 }
 .social .rsschool-link:hover {
   color: #FF4646;
+}
+@media (hover: none) and (pointer: coarse) {
+  .social .rsschool-link:hover {
+    color: #181C29;
+  }
+}
+
+.area-outside-the-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ECF3F8;
+  border-radius: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+}
+
+.modal__image-container {
+  width: 100%;
+  height: 230px;
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.modal__label {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal__header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal__header-container .modal__tag {
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15.6px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-align: left;
+  color: #181C29;
+}
+.modal__header-container .modal__tag_pink {
+  color: #FF43F7;
+}
+.modal__header-container .modal__header {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24.32px;
+  letter-spacing: 1.28px;
+  text-transform: uppercase;
+  text-align: left;
+  color: #181C29;
+}
+.modal__header-container .modal__description {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+
+.modal__details-container .modal__details-title {
+  font-family: Montserrat;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 130%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #181C29;
+  margin-bottom: 8px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.detail .detail__title {
+  flex-grow: 1;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+.detail .detail__value {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+.detail .detail__graphic-value-container {
+  display: flex;
+  gap: 8px;
+}
+.detail .detail__graphic-value-container .value-point {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal__close-button {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.modal__close-button::after {
+  content: "";
+  width: 28px;
+  height: 2px;
+  position: absolute;
+  bottom: 19px;
+  right: calc(50% - 14px);
+  background-color: #181C29;
+  border-radius: 100px;
+  transform: rotate(-45deg);
+}
+.modal__close-button::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  position: absolute;
+  top: 19px;
+  right: calc(50% - 14px);
+  background-color: #181C29;
+  border-radius: 100px;
+  transform: rotate(45deg);
 }
 
 /*# sourceMappingURL=gifts.css.map */

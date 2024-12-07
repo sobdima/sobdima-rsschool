@@ -31,13 +31,13 @@
 
         &:hover {
             background-color: $static-white;
-            color: $dark; 
+            color: $dark;
             cursor: pointer;
-            
+
             @include media-desktop-transit {
-                 background-color: $dark;
-                 color: $static-white;
-                 cursor: default;
+                background-color: $dark;
+                color: $static-white;
+                cursor: default;
             }
          }
     }
@@ -52,7 +52,7 @@
     gap: 8px;
 
     .caption {
-       @include caption($static-white); 
+       @include caption($static-white);
     }
 }
 

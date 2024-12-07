@@ -48,7 +48,7 @@
             .contacts__link {
                 color: $dark;
             }
-    
+
             .contacts__label {
                 color: $dark;
             }
@@ -81,7 +81,10 @@
         &:hover {
             path {
                 stroke: $primary;
-                @include media-desktop-transit {
+            }
+
+            @include media-desktop-transit {
+                path {
                     stroke: $dark;
                 }
             }
@@ -105,6 +108,10 @@
 
         &:hover {
             color: $primary;
+
+            @include disable-hover-effects {
+                color: $dark;
+            }
         }
     }
 }

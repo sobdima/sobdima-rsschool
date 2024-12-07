@@ -19,7 +19,12 @@ header {
     @include action-small(600, $dark);
     &:hover {
         cursor: pointer;
-        @include media-tablet {
+
+        @include media-desktop-transit {
+            cursor: default;
+        }
+
+        @include disable-hover-effects {
             cursor: default;
         }
     }
@@ -37,6 +42,12 @@ header {
             background-color: $primary-10;
             border-radius: 12px;
             color: $primary;
+
+            @include disable-hover-effects {
+                cursor: default;
+                background-color: transparent;
+                color: $dark;
+            }
         }
     }
 

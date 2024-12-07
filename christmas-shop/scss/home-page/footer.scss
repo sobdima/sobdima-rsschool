@@ -81,7 +81,10 @@
         &:hover {
             path {
                 stroke: $primary;
-                @include media-desktop-transit {
+            }
+
+            @include disable-hover-effects {
+                path {
                     stroke: $dark;
                 }
             }
@@ -105,6 +108,10 @@
 
         &:hover {
             color: $primary;
+
+            @include disable-hover-effects {
+                color: $dark;
+            }
         }
     }
 }

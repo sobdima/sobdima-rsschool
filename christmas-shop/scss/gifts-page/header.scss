@@ -1,5 +1,6 @@
 header {
     @include container-style($static-white);
+    position: relative;
 }
 
 
@@ -36,6 +37,11 @@ header {
             background-color: $primary-10;
             border-radius: 12px;
             color: $primary;
+
+            @include disable-hover-effects {
+                background-color: transparent;
+                color: $dark;
+            }
         }
     }
 

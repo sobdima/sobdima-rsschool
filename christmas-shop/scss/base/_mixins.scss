@@ -114,3 +114,7 @@
 @mixin media-mobile {
     @media (max-width: 380px) { @content; }
 }
+
+@mixin disable-hover-effects {
+    @media (hover: none) and (pointer: coarse) { @content; }
+}

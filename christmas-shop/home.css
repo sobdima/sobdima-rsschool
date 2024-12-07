@@ -55,7 +55,12 @@ header {
 .header__logo:hover {
   cursor: pointer;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .header__logo:hover {
+    cursor: default;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
   .header__logo:hover {
     cursor: default;
   }
@@ -80,6 +85,13 @@ header {
   background-color: rgba(255, 70, 70, 0.1019607843);
   border-radius: 12px;
   color: #FF4646;
+}
+@media (hover: none) and (pointer: coarse) {
+  .header__navigation a:hover {
+    cursor: default;
+    background-color: transparent;
+    color: #181C29;
+  }
 }
 @media (max-width: 768px) {
   .header__navigation {
@@ -251,6 +263,13 @@ header {
   cursor: pointer;
 }
 @media (max-width: 1024px) {
+  .hero__container .button:hover {
+    background-color: #181C29;
+    color: #FFFFFF;
+    cursor: default;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
   .hero__container .button:hover {
     background-color: #181C29;
     color: #FFFFFF;
@@ -806,7 +825,7 @@ header {
 .link-container .link:hover path {
   stroke: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .link-container .link:hover path {
     stroke: #181C29;
   }
@@ -837,6 +856,11 @@ header {
 }
 .social .rsschool-link:hover {
   color: #FF4646;
+}
+@media (hover: none) and (pointer: coarse) {
+  .social .rsschool-link:hover {
+    color: #181C29;
+  }
 }
 
 /*# sourceMappingURL=home.css.map */

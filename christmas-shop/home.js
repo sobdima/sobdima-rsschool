@@ -1,4 +1,4 @@
-//Implementation of the burger menu
+// Implementation of the burger menu
 
 const burgerButton = document.querySelector('.burger');
 const burgerMenu = document.querySelector('.burger-menu');
@@ -29,7 +29,7 @@ window.addEventListener('resize', () => {
 
 
 
-//Implementation of the Slider
+// Implementation of the Slider
 
 const sliderButtonRight = document.getElementById('slider-button-right');
 const sliderButtonLeft = document.getElementById('slider-button-left');
@@ -38,14 +38,14 @@ const sliderContainer = document.querySelector('.slider-container');
 const firstSliderPosition = 0;
 let currentSliderPosition = 0;
 let distanceForOneClick = 0;
-let arr = [];
+let arrayOfFourRandomNumbers = [];
 let arrMaxLength;
 
 window.addEventListener('resize', () => {
     sliderContainer.style.transform = `translateX(${firstSliderPosition}px)`;
     currentSliderPosition = 0;
     distanceForOneClick = 0;
-    arr = [];
+    arrayOfFourRandomNumbers = [];
     arrMaxLength = 0;
     setSliderButtonToDefaultStatus();
 })
@@ -64,10 +64,10 @@ sliderButtonRight.addEventListener('click', () => {
 
     setDistanceForOneClickAndArrayLength();
 
-    if (arr.length < arrMaxLength) {
+    if (arrayOfFourRandomNumbers.length < arrMaxLength) {
         currentSliderPosition = currentSliderPosition - distanceForOneClick;
         sliderContainer.style.transform = `translateX(${currentSliderPosition}px)`;
-        arr.push(1);
+        arrayOfFourRandomNumbers.push(1);
     } else {
         return currentSliderPosition;
     }
@@ -77,19 +77,19 @@ sliderButtonRight.addEventListener('click', () => {
 
 sliderButtonLeft.addEventListener('click', () => {
 
-    if (arr.length <= 0) {
+    if (arrayOfFourRandomNumbers.length <= 0) {
         return currentSliderPosition;
     } else {
         currentSliderPosition = currentSliderPosition + distanceForOneClick;
         sliderContainer.style.transform = `translateX(${currentSliderPosition}px)`;
-        arr.pop();
+        arrayOfFourRandomNumbers.pop();
     }
 
     changeSliderButtonActivityStatus();
 });
 
 function changeSliderButtonActivityStatus () {
-    if (arr.length == 0) {
+    if (arrayOfFourRandomNumbers.length == 0) {
         sliderButtonLeft.classList.remove('active');
         sliderButtonLeft.classList.add('inactive');
 
@@ -97,7 +97,7 @@ function changeSliderButtonActivityStatus () {
         sliderButtonRight.classList.add('active');
     }
 
-    if (arr.length > 0 && arr.length < arrMaxLength) {
+    if (arrayOfFourRandomNumbers.length > 0 && arrayOfFourRandomNumbers.length < arrMaxLength) {
         sliderButtonLeft.classList.remove('inactive');
         sliderButtonLeft.classList.add('active');
 
@@ -105,7 +105,7 @@ function changeSliderButtonActivityStatus () {
         sliderButtonRight.classList.add('active');
     }
 
-    if (arr.length == arrMaxLength) {
+    if (arrayOfFourRandomNumbers.length == arrMaxLength) {
         sliderButtonLeft.classList.remove('inactive');
         sliderButtonLeft.classList.add('active');
 
@@ -126,40 +126,121 @@ function setSliderButtonToDefaultStatus () {
 
 
 
+// Implementation of the Timer
 
-/* const timerDays = document.getElementById('days');
+const timerDays = document.getElementById('days');
+const timerHours = document.getElementById('hours');
+const timerMinutes = document.getElementById('minutes');
 const timerSeconds = document.getElementById('seconds');
-
-const targetDate = new Date('2025-01-01T00:00:00Z');
-const nowDate = Date.now();
-
-const timeDiff = targetDate - nowDate;
-
-console.log('targetDate = ', targetDate);
-console.log('Convert targetDate to UTC = ', targetDate.toUTCString());
 
 const msInSecond = 1000;
 const msInMinute = msInSecond * 60;
 const msInHour = msInMinute * 60;
 const msInDay = msInHour * 24;
 
-const days = Math.floor(timeDiff / msInDay);
-console.log('days left', days);
-const remainingAfterDays = timeDiff % msInDay;
+function updateTimer() {
+
+    const targetDate = new Date('January 1, 2025 00:00:00 GMT+00:00');
+    const nowDate = new Date();
+    const timeDiff = targetDate - nowDate;
+
+    if (timeDiff <= 0) {
+        timerDays.textContent = 0;
+        timerHours.textContent = 0;
+        timerMinutes.textContent = 0;
+        timerSeconds.textContent = 0;
+        return;
+    }
+
+    const days = Math.floor(timeDiff / msInDay);
+    const remainingAfterDays = timeDiff % msInDay;
+
+    const hours = Math.floor(remainingAfterDays / msInHour);
+    const remainingAfterHours = remainingAfterDays % msInHour;
+
+    const minutes = Math.floor(remainingAfterHours / msInMinute);
+    const remainingAfterMinutes = remainingAfterHours % msInMinute;
+
+    const seconds = Math.floor(remainingAfterMinutes / msInSecond);
+
+    timerDays.textContent = days;
+    timerHours.textContent = hours;
+    timerMinutes.textContent = minutes;
+    timerSeconds.textContent = seconds;
+
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
 
 
-const hours = Math.floor(remainingAfterDays / msInHour);
-console.log('hours left', hours)
-const remainingAfterHours = remainingAfterDays % msInHour;
 
 
-const minutes = Math.floor(remainingAfterHours / msInMinute);
-console.log('minutes left', minutes)
-const remainingAfterMinutes = remainingAfterHours % msInMinute;
 
 
-const seconds = Math.floor(remainingAfterMinutes / msInSecond);
-console.log('seconds left', seconds)
 
-timerDays.textContent = days;
-timerSeconds.textContent = seconds; */
+
+// 4 random cards are displayed in the block Best Gifts
+
+const cardsContainer = document.querySelector('.cards-container');
+
+fetch('./assets/data/gifts.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const cards = data;
+        const arrayOfFourRandomNumbers = [];
+        const randomFourCards = [];
+
+        function clearCardsContainer() {
+            cardsContainer.innerHTML = '';
+        }
+
+        function createCardItem(card) {
+            const blockItem = document.createElement('div');
+            blockItem.classList.add('card');
+
+            blockItem.innerHTML = `
+                <img src="${card.image}" alt="${card.name}">
+                <div class="card__label">
+                    <span class="card__tag  card__tag_${card.color}">${card.category}</span>
+                    <h3 class="card__header">${card.name}</h3>
+                </div>
+            `;
+
+            cardsContainer.appendChild(blockItem);
+        }
+
+        function fillArrayOfFourRandomNumbers() {
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * max);
+            }
+
+            while (arrayOfFourRandomNumbers.length < 4) {
+                let i = getRandomInt(36);
+
+                if (arrayOfFourRandomNumbers.indexOf(i) == -1) {
+                    arrayOfFourRandomNumbers.push(i)
+                }
+            }
+        }
+
+        fillArrayOfFourRandomNumbers();
+
+        clearCardsContainer();
+
+        arrayOfFourRandomNumbers.forEach( i => {
+            randomFourCards.push(cards[i])
+        })
+
+        randomFourCards.forEach(i => {
+            createCardItem(i);
+        })
+    })
+.catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+});

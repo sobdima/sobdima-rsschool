@@ -47,9 +47,9 @@
     &:hover {
         background-color: $static-white-20;
         cursor: pointer;
+
         @include media-desktop-transit {
             background-color: transparent;
-            
             cursor: default;
         }
     }
@@ -58,7 +58,7 @@
 
 .tab_active {
     background-color: $static-white-20;
-    
+
     &:hover {
         background-color: $static-white-20;
         cursor: default;
@@ -68,7 +68,7 @@
 
 .cards-container {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     flex-wrap: wrap;
     gap: 12px;
 }
@@ -141,7 +141,7 @@
     bottom: 8px;
     right: 8px;
 
-    @include media-tablet {
+    /* @include media-tablet {
         display: flex;
-    }
+    } */
 }

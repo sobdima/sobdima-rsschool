@@ -31,7 +31,7 @@
         @include button();
         @include action-small(500, $static-white);
 
-        
+
 
         &:hover {
            background-color: $static-white;
@@ -42,6 +42,12 @@
                 background-color: $dark;
                 color: $static-white;
                 cursor: default;
+           }
+
+           @include disable-hover-effects {
+            background-color: $dark;
+            color: $static-white;
+            cursor: default;
            }
         }
     }

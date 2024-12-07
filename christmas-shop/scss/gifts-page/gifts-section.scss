@@ -48,7 +48,7 @@
         background-color: $static-white-20;
         cursor: pointer;
 
-        @include media-desktop-transit {
+        @include disable-hover-effects {
             background-color: transparent;
             cursor: default;
         }
@@ -87,7 +87,7 @@
             color: $primary;
         }
 
-        @include media-desktop-transit {
+        @include disable-hover-effects {
             cursor: default;
 
             .card__header {

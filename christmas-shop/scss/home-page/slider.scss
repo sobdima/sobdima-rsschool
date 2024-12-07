@@ -61,7 +61,7 @@
                 cursor: pointer;
                 path { stroke: $primary; }
 
-                @include media-desktop-transit {
+                @include disable-hover-effects {
                     background: none;
                     cursor: default;
                     path { stroke: $static-white; }

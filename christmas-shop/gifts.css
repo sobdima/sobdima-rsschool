@@ -294,7 +294,7 @@ header {
   background-color: rgba(255, 255, 255, 0.2);
   cursor: pointer;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .tab:hover {
     background-color: transparent;
     cursor: default;
@@ -328,7 +328,7 @@ header {
 .card:hover .card__header {
   color: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .card:hover {
     cursor: default;
   }
@@ -448,7 +448,7 @@ header {
 .contacts__card:hover .contacts__label {
   color: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .contacts__card:hover {
     cursor: default;
   }
@@ -496,7 +496,7 @@ header {
 .link-container .link:hover path {
   stroke: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .link-container .link:hover path {
     stroke: #181C29;
   }

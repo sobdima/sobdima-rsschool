@@ -34,7 +34,7 @@
             color: $dark;
             cursor: pointer;
 
-            @include media-desktop-transit {
+            @include disable-hover-effects {
                 background-color: $dark;
                 color: $static-white;
                 cursor: default;

@@ -262,13 +262,6 @@ header {
   color: #181C29;
   cursor: pointer;
 }
-@media (max-width: 1024px) {
-  .hero__container .button:hover {
-    background-color: #181C29;
-    color: #FFFFFF;
-    cursor: default;
-  }
-}
 @media (hover: none) and (pointer: coarse) {
   .hero__container .button:hover {
     background-color: #181C29;
@@ -475,7 +468,7 @@ header {
 .slider-buttons-container .slider-button.active:hover path {
   stroke: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .slider-buttons-container .slider-button.active:hover {
     background: none;
     cursor: default;
@@ -537,7 +530,7 @@ header {
 .card:hover .card__header {
   color: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .card:hover {
     cursor: default;
   }
@@ -652,7 +645,7 @@ header {
   color: #181C29;
   cursor: pointer;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .cta__container .button:hover {
     background-color: #181C29;
     color: #FFFFFF;

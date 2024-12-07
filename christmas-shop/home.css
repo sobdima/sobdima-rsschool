@@ -770,7 +770,7 @@ header {
 .contacts__card:hover .contacts__label {
   color: #FF4646;
 }
-@media (max-width: 1024px) {
+@media (hover: none) and (pointer: coarse) {
   .contacts__card:hover {
     cursor: default;
   }

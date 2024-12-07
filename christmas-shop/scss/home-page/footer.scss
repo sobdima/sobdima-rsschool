@@ -42,7 +42,7 @@
             color: $primary;
         }
 
-        @include media-desktop-transit {
+        @include disable-hover-effects {
             cursor: default;
 
             .contacts__link {

@@ -543,10 +543,19 @@ header {
   bottom: 0;
   z-index: 100;
   background-color: rgba(0, 0, 0, 0.6);
+  transition: display 1s ease;
+}
+
+.area-outside-the-modal_enabled {
+  display: block;
+}
+
+.area-outside-the-modal_disabled {
+  display: none;
 }
 
 .modal {
-  max-width: 400px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   background-color: #ECF3F8;
@@ -555,16 +564,32 @@ header {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 101;
+  z-index: 152;
+}
+@media (max-width: 767px) {
+  .modal {
+    width: 364px;
+  }
 }
 
 .modal__image-container {
   width: 100%;
   height: 230px;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.modal__image-purple {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-work.png");
+}
+
+.modal__image-green {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-health.png");
+}
+
+.modal__image-pink {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
 }
 
 .modal__label {
@@ -593,6 +618,12 @@ header {
 }
 .modal__header-container .modal__tag_pink {
   color: #FF43F7;
+}
+.modal__header-container .modal__tag_purple {
+  color: #4361FF;
+}
+.modal__header-container .modal__tag_green {
+  color: #06A44F;
 }
 .modal__header-container .modal__header {
   font-family: Montserrat;
@@ -688,6 +719,16 @@ header {
   background-color: #181C29;
   border-radius: 100px;
   transform: rotate(45deg);
+}
+.modal__close-button:hover {
+  cursor: pointer;
+  background-color: rgba(255, 70, 70, 0.1019607843);
+  border-radius: 12px;
+}
+@media (hover: none) and (pointer: coarse) {
+  .modal__close-button:hover {
+    background-color: transparent;
+  }
 }
 
 /*# sourceMappingURL=gifts.css.map */

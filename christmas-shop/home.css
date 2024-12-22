@@ -856,4 +856,201 @@ header {
   }
 }
 
+.area-outside-the-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: display 1s ease;
+}
+
+.area-outside-the-modal_enabled {
+  display: block;
+}
+
+.area-outside-the-modal_disabled {
+  display: none;
+}
+
+.modal {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ECF3F8;
+  border-radius: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 152;
+}
+@media (max-width: 767px) {
+  .modal {
+    width: 364px;
+  }
+}
+
+.modal__image-container {
+  width: 100%;
+  height: 230px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.modal__image-purple {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-work.png");
+}
+
+.modal__image-green {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-health.png");
+}
+
+.modal__image-pink {
+  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
+}
+
+.modal__label {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal__header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal__header-container .modal__tag {
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15.6px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-align: left;
+  color: #181C29;
+}
+.modal__header-container .modal__tag_pink {
+  color: #FF43F7;
+}
+.modal__header-container .modal__tag_purple {
+  color: #4361FF;
+}
+.modal__header-container .modal__tag_green {
+  color: #06A44F;
+}
+.modal__header-container .modal__header {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24.32px;
+  letter-spacing: 1.28px;
+  text-transform: uppercase;
+  text-align: left;
+  color: #181C29;
+}
+.modal__header-container .modal__description {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+
+.modal__details-container .modal__details-title {
+  font-family: Montserrat;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 130%;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #181C29;
+  margin-bottom: 8px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.detail .detail__title {
+  flex-grow: 1;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+.detail .detail__value {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23.68px;
+  text-align: left;
+  color: #181C29;
+}
+.detail .detail__graphic-value-container {
+  display: flex;
+  gap: 8px;
+}
+.detail .detail__graphic-value-container .value-point {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal__close-button {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.modal__close-button::after {
+  content: "";
+  width: 28px;
+  height: 2px;
+  position: absolute;
+  bottom: 19px;
+  right: calc(50% - 14px);
+  background-color: #181C29;
+  border-radius: 100px;
+  transform: rotate(-45deg);
+}
+.modal__close-button::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  position: absolute;
+  top: 19px;
+  right: calc(50% - 14px);
+  background-color: #181C29;
+  border-radius: 100px;
+  transform: rotate(45deg);
+}
+.modal__close-button:hover {
+  cursor: pointer;
+  background-color: rgba(255, 70, 70, 0.1019607843);
+  border-radius: 12px;
+}
+@media (hover: none) and (pointer: coarse) {
+  .modal__close-button:hover {
+    background-color: transparent;
+  }
+}
+
 /*# sourceMappingURL=home.css.map */

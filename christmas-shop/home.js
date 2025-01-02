@@ -140,9 +140,10 @@ const msInDay = msInHour * 24;
 
 function updateTimer() {
 
-    const targetDate = new Date('January 1, 2025 00:00:00 GMT+00:00');
     const nowDate = new Date();
-    const timeDiff = targetDate - nowDate;
+    const currentYear = nowDate.getUTCFullYear();
+    const nextNewYear = new Date(Date.UTC(currentYear + 1, 0, 1, 0, 0, 0));
+    const timeDiff = nextNewYear - nowDate;
 
     if (timeDiff <= 0) {
         timerDays.textContent = 0;

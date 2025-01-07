@@ -3,6 +3,10 @@
   scroll-behavior: smooth;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: #FFFFFF;
   overflow-x: hidden;
@@ -103,7 +107,7 @@ header {
   display: none;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  position: absolute;
   top: 64px;
   right: 0;
   width: 100%;
@@ -127,6 +131,8 @@ header {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  top: -30px;
 }
 .burger__navigation a {
   font-family: Montserrat;
@@ -183,10 +189,9 @@ header {
   transform: rotate(45deg) translate(0px, -4px);
 }
 
-.disable-scrolling {
-  overflow: hidden;
-}
-
+/* .disable-scrolling {
+    overflow-y: hidden;
+} */
 .hero {
   max-width: 1440px;
   margin: auto;

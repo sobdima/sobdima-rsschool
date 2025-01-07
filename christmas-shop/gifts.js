@@ -2,21 +2,33 @@
 
 const burgerButton = document.querySelector('.burger');
 const burgerMenu = document.querySelector('.burger-menu');
+const burgerLinks = document.querySelectorAll('.burger-menu a');
 
 function openCloseBurgerMenu() {
     burgerMenu.classList.toggle('burger-menu_visible');
     burgerButton.classList.toggle('burger_cross');
-    document.body.classList.toggle('disable-scrolling');
+    document.documentElement.style.overflowY = 'hidden';
 }
 
 function closeBurgerMenu() {
     burgerMenu.classList.remove('burger-menu_visible');
     burgerButton.classList.remove('burger_cross');
-    document.body.classList.remove('disable-scrolling');
+    document.documentElement.style.overflowY = 'auto';
 }
 
 burgerButton.addEventListener("click", openCloseBurgerMenu);
 burgerMenu.addEventListener("click", closeBurgerMenu);
+
+burgerLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const targetLocation = link.getAttribute('href');
+        closeBurgerMenu();
+        setTimeout(() => {
+            window.location.href = targetLocation;
+        }, 500);
+    });
+});
 
 window.addEventListener('resize', () => {
     if (window.innerWidth >= 769) {
@@ -236,3 +248,11 @@ window.onscroll = function () {
         backToTopButton.style.display = "none";
     }
 }
+
+window.addEventListener('resize', () => {
+    if (document.documentElement.scrollTop > 500 && window.innerWidth <= 768) {
+        backToTopButton.style.display = "flex";
+    } else {
+        backToTopButton.style.display = "none";
+    }
+})

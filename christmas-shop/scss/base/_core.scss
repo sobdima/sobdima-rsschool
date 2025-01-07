@@ -3,6 +3,10 @@
     scroll-behavior: smooth;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: $static-white;
     overflow-x: hidden;

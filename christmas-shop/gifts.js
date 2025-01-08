@@ -7,13 +7,15 @@ const burgerLinks = document.querySelectorAll('.burger-menu a');
 function openCloseBurgerMenu() {
     burgerMenu.classList.toggle('burger-menu_visible');
     burgerButton.classList.toggle('burger_cross');
-    document.documentElement.style.overflowY = 'hidden';
+    //document.documentElement.style.overflowY = 'hidden';
+    document.documentElement.classList.toggle('disable-scrolling');
 }
 
 function closeBurgerMenu() {
     burgerMenu.classList.remove('burger-menu_visible');
     burgerButton.classList.remove('burger_cross');
-    document.documentElement.style.overflowY = 'auto';
+    //document.documentElement.style.overflowY = 'auto';
+    document.documentElement.classList.remove('disable-scrolling');
 }
 
 burgerButton.addEventListener("click", openCloseBurgerMenu);

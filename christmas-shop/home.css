@@ -189,9 +189,10 @@ header {
   transform: rotate(45deg) translate(0px, -4px);
 }
 
-/* .disable-scrolling {
-    overflow-y: hidden;
-} */
+.disable-scrolling {
+  overflow-y: hidden;
+}
+
 .hero {
   max-width: 1440px;
   margin: auto;

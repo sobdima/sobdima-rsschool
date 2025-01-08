@@ -222,9 +222,10 @@ header {
   transform: rotate(45deg) translate(0px, -4px);
 }
 
-/* .disable-scrolling {
-    overflow: hidden;
-} */
+.disable-scrolling {
+  overflow-y: hidden;
+}
+
 .gifts {
   max-width: 1440px;
   margin: auto;

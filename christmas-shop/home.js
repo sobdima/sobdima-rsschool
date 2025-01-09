@@ -354,14 +354,16 @@ fetch('./assets/data/gifts.json')
             const filteredModal = cards.filter(modal => modal.name === modalHeader);
             filteredModal.forEach(modal => createModalItem(modal));
             backgroundOfModal.style.display = 'block';
-            document.body.classList.toggle('disable-scrolling');
+            //document.body.classList.toggle('disable-scrolling');
+            document.documentElement.classList.toggle('disable-scrolling');
         }
 
         function closeModalWindow(e) {
             let classes = e.target.classList;
             if (classes.contains('area-outside-the-modal') || classes.contains('modal__close-button')) {
                 backgroundOfModal.style.display = 'none';
-                document.body.classList.toggle('disable-scrolling');
+                //document.body.classList.toggle('disable-scrolling');
+                document.documentElement.classList.toggle('disable-scrolling');
             }
         }
 

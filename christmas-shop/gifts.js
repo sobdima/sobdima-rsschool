@@ -216,14 +216,16 @@ fetch('./assets/data/gifts.json')
             const filteredModal = cards.filter(modal => modal.name === modalHeader);
             filteredModal.forEach(modal => createModalItem(modal));
             backgroundOfModal.style.display = 'block';
-            document.body.classList.toggle('disable-scrolling');
+            //document.body.classList.toggle('disable-scrolling');
+            document.documentElement.classList.toggle('disable-scrolling');
         }
 
         function closeModalWindow(e) {
             let classes = e.target.classList;
             if (classes.contains('area-outside-the-modal') || classes.contains('modal__close-button')) {
                 backgroundOfModal.style.display = 'none';
-                document.body.classList.toggle('disable-scrolling');
+                //document.body.classList.toggle('disable-scrolling');
+                document.documentElement.classList.toggle('disable-scrolling');
             }
         }
 
@@ -244,7 +246,7 @@ fetch('./assets/data/gifts.json')
 const backToTopButton = document.getElementById('back-to-top');
 
 window.onscroll = function () {
-    if (document.documentElement.scrollTop > 500 && window.innerWidth <= 768) {
+    if (document.documentElement.scrollTop > 300 && window.innerWidth <= 768) {
         backToTopButton.style.display = "flex";
     } else {
         backToTopButton.style.display = "none";
@@ -252,7 +254,7 @@ window.onscroll = function () {
 }
 
 window.addEventListener('resize', () => {
-    if (document.documentElement.scrollTop > 500 && window.innerWidth <= 768) {
+    if (document.documentElement.scrollTop > 300 && window.innerWidth <= 768) {
         backToTopButton.style.display = "flex";
     } else {
         backToTopButton.style.display = "none";

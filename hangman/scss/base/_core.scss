@@ -1,0 +1,23 @@
+* {
+    font-size: 10px;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    height: 100vh;
+    padding: 0 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $static-gray;
+    font-family: "Sour Gummy", serif;
+}
+
+h1, h2, h3, h4, h5, p {
+    margin: 0;
+}

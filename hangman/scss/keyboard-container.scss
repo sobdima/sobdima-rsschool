@@ -1,0 +1,133 @@
+.keyboard-container {
+  //border: 1px solid blue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  @include media-tablet-transit {
+    gap: 10px;
+  }
+}
+
+.word {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  @include media-tablet {
+    gap: 8px;
+  }
+}
+
+.letter {
+  font-size: 32px;
+  font-weight: 600;
+  color: $secret-word;
+
+  @include media-tablet-transit {
+    font-size: 28px;
+  }
+}
+
+.hint-container {
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include media-tablet-transit {
+    margin: 0 10px;
+    gap: 8px;
+  }
+}
+
+.hint-title {
+  font-size: 24px;
+  font-weight: 400;
+
+  @include media-tablet-transit {
+    font-size: 18px;
+  }
+}
+
+.guesses-title {
+  font-size: 21px;
+  font-weight: 400;
+
+  @include media-tablet-transit {
+    font-size: 18px;
+  }
+}
+
+.incorrect-guesses {
+  font-size: 21px;
+  color: $incorrect;
+
+  @include media-tablet-transit {
+    font-size: 18px;
+  }
+}
+
+.keyboard {
+  font-size: 16px;
+  margin: 20px 120px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  @include media-desktop-transit {
+    margin: 10px 40px;
+  }
+  @include media-tablet {
+    margin: 10px 20px;
+  }
+  @include media-mobile {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+}
+
+button {
+  width: 45px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background-color: $button-background;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $button-background-hover;
+
+    @include disable-hover-effects {
+      background-color: $button-background;
+      cursor: default;
+    }
+  }
+
+
+  @include media-tablet {
+    width: 40px;
+  }
+  @include media-tablet-transit {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+.button_focused {
+  cursor: pointer;
+  background-color: $button-background-hover;
+}
+
+button.button_pressed {
+  //background-color: $button-background-pressed;
+  background-color: rgb(84 85 172 / 45%);
+  cursor: default;
+}

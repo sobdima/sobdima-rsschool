@@ -1,0 +1,79 @@
+.area-outside-the-modal {
+    //display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    transition: display 1s ease;
+}
+
+.area-outside-the-modal_enabled {
+    display: block;
+}
+
+.area-outside-the-modal_disabled {
+    display: none;
+}
+
+.modal {
+    width: 400px;
+    height: 400px;
+    padding: 40px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: $static-gray;
+    border-radius: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 152;
+
+    @include media-tablet-transit {
+        width: 300px;
+        height: 350px;
+    }
+}
+
+.modal__congrats {
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: $secret-word;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal__congrats_red {
+    color: $incorrect;
+}
+
+.modal__title {
+    font-size: 24px;
+}
+
+.modal__word {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: $modal-secret-word;
+}
+
+.modal__button {
+    font-size: 24px;
+    width: 60%;
+    height: 60px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $button-background-hover;
+        @include disable-hover-effects {
+          background-color: $button-background;
+          cursor: default;
+        }
+    }
+}

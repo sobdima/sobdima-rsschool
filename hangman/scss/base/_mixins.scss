@@ -1,0 +1,19 @@
+@mixin media-desktop {
+    @media (max-width: 1440px) { @content; }
+}
+@mixin media-desktop-transit {
+    @media (max-width: 1024px) { @content; }
+}
+@mixin media-tablet {
+    @media (max-width: 768px) { @content; }
+}
+@mixin media-tablet-transit {
+    @media (max-width: 767px) { @content; }
+}
+@mixin media-mobile {
+    @media (max-width: 360px) { @content; }
+}
+
+@mixin disable-hover-effects {
+    @media (hover: none) and (pointer: coarse) { @content; }
+}

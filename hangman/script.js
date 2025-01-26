@@ -228,7 +228,7 @@ function fillWordContainer() {
 function incorrectGuessesConstructor() {
     incorrectGuesses.innerHTML = '';
     incorrectGuesses.innerHTML = `${incorrectGuessesCounter} / 6`;
-    gallowsImage.style.backgroundImage = `url("/hmtask/sobdima-JSFEEN2024Q4/hangman/assets/${images[incorrectGuessesCounter]}")`;
+    gallowsImage.style.backgroundImage = `url("/sobdima-JSFEEN2024Q4/hangman/assets/${images[incorrectGuessesCounter]}")`;
 }
 
 function guessTheLetter(elem) {
@@ -303,7 +303,7 @@ function startNewGame() {
 
     incorrectGuessesCounter = 0;
     incorrectGuesses.innerHTML = '0 / 6';
-    gallowsImage.style.backgroundImage = `url("/hmtask/sobdima-JSFEEN2024Q4/hangman/assets/${images[incorrectGuessesCounter]}")`;
+    gallowsImage.style.backgroundImage = `url("/sobdima-JSFEEN2024Q4/hangman/assets/${images[incorrectGuessesCounter]}")`;
 
     arrayOfPressedButtons.length = 0;
     arrayOfUnderscore.length = 0;

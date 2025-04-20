@@ -1,0 +1,200 @@
+body {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.app-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/*------HEADER------*/
+
+header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.nav-button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+}
+
+.nav-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.nav-button.active:hover {
+  background-color: #007bff;
+}
+
+/*------GARAGE-VIEW DIV------*/
+
+.view {
+  display: none;
+}
+
+.active-view {
+  display: block;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+/*------CONTROLS DIV------*/
+
+.controls .form-group,
+.race-controls {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type='text'] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type='color'] {
+  border-radius: 4px;
+  width: 40px;
+  height: 32px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:hover:not(:disabled) {
+  background-color: #ddd;
+}
+
+#create-car-btn,
+#generate-cars-btn {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+#create-car-btn:hover:not(:disabled),
+#generate-cars-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+#update-car-btn {
+  background-color: #ffc107;
+  color: black;
+  border-color: #ffc107;
+}
+#update-car-btn:hover:not(:disabled) {
+  background-color: #e0a800;
+}
+
+#race-btn {
+  background-color: #17a2b8;
+  color: white;
+  border-color: #17a2b8;
+}
+#race-btn:hover:not(:disabled) {
+  background-color: #138496;
+}
+
+#reset-btn {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+#reset-btn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+/*------CAR-LIST-CONTAINER------*/
+
+.car-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.car {
+  display: flex;
+  flex-direction: column;
+  /* border-bottom: 1px dashed black; */
+}
+
+.car-road-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px dashed;
+  /* border: 1px solid green; */
+}
+
+.car-icon {
+  display: flex;
+  justify-content: left;
+  align-items: flex-end;
+  width: 15%;
+  /* border: 1px solid red; */
+}
+.flag-icon {
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+  width: 15%;
+  /* border: 1px solid blue; */
+}
+
+.car-svg-icon {
+  width: 100%;
+  transform: scale(-1, 1);
+}
+.flag-png-icon {
+  width: 60%;
+}
+
+.car-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+#car-select-btn,
+#car-remove-btn {
+  color: #000000;
+  background-color: #bbd0f4;
+  border-color: #bbd0f4;
+}
+
+/*------PAGINATION DIV------*/
+
+.pagination {
+  margin-top: 40px;
+}

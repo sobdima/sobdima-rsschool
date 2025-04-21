@@ -1,73 +1,125 @@
 import { Builder } from './pageBuilder';
-//import { Car } from './carBuilder';
-import { createCarOnServerAndRender } from './servFunctions';
-import {
-  loadAndRenderCarsFromStorage,
-  updateGarageCounter,
-} from './localStorage';
+import { renderGarageCars } from './garageView';
+import { handleCreateCar } from './createCarHandler';
+import { handleDeleteCar } from './deleteCarHandler';
 import '../public/style.css';
+import { handleUpdateCar } from './updateCarHandler';
 
-const pageBuilder = new Builder();
-const appWrapper = document.querySelector<HTMLDivElement>('.app-wrapper');
+function initializeApp() {
+  const appWrapper = document.querySelector('.app-wrapper');
+  if (!appWrapper) {
+    console.error(
+      'Fatal Error: App wrapper ".app-wrapper" not found in the DOM.',
+    );
+    return;
+  }
 
-if (!appWrapper) {
-  console.error('app-wrapper DIV element not found!');
-} else {
-  const appHeader = pageBuilder.header();
-  const appMain = pageBuilder.main();
+  const pageBuilder = new Builder();
+  const headerElement = pageBuilder.buildHeaderButtons();
+  const mainElement = pageBuilder.buildMainTag();
+  const garageViewElement = pageBuilder.buildGarageView();
+  const carsContainerElement = pageBuilder.buildCarsContainer();
 
-  const garageViewContent = pageBuilder.buildGarageView();
-  const carsContainer = pageBuilder.buildCarsContainer();
+  garageViewElement.appendChild(carsContainerElement);
+  mainElement.appendChild(garageViewElement);
 
-  appWrapper.appendChild(appHeader);
-  appWrapper.appendChild(appMain);
-  appMain.appendChild(garageViewContent);
-  garageViewContent.appendChild(carsContainer);
+  appWrapper.innerHTML = '';
+  appWrapper.appendChild(headerElement);
+  appWrapper.appendChild(mainElement);
 
-  const createCarBtn = document.getElementById(
-    'create-car-btn',
-  ) as HTMLButtonElement | null;
-  const carNameInput = document.getElementById(
-    'create-name',
-  ) as HTMLInputElement | null;
-  const carColorInput = document.getElementById(
-    'create-color',
-  ) as HTMLInputElement | null;
-  const garageCounter = document.getElementById(
-    'garage-total-count',
-  ) as HTMLElement;
+  renderGarageCars(carsContainerElement).catch((error) => {
+    console.error('Error rendering garage cars:', error);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    loadAndRenderCarsFromStorage(carsContainer);
-    updateGarageCounter(garageCounter);
-
-    const carControlsContainer = document.querySelectorAll('.car-controls');
-    console.log(carControlsContainer);
+    if (carsContainerElement) {
+      carsContainerElement.innerHTML =
+        '<p>Failed to load cars. Try to refresh the page.</p>';
+    }
   });
 
-  if (createCarBtn && carNameInput && carColorInput && carsContainer) {
-    createCarBtn.addEventListener('click', () => {
-      const name = carNameInput.value.trim();
-      const color = carColorInput.value;
+  // Garage & Winners Buttons in the HEADER
+  /* const garageBtn = document.getElementById('nav-garage-btn');
+  const winnersBtn = document.getElementById('nav-winners-btn'); */
 
-      if (!name) {
-        alert('Please enter a car name.');
-        carNameInput.focus();
-        return;
-      }
+  //CONTROLS Button
+  const createNameInput = document.getElementById(
+    'create-name',
+  ) as HTMLInputElement;
+  const createColorInput = document.getElementById(
+    'create-color',
+  ) as HTMLInputElement;
+  const createButton = document.getElementById(
+    'create-car-btn',
+  ) as HTMLButtonElement;
+  const updateNameInput = document.getElementById(
+    'update-name',
+  ) as HTMLInputElement;
+  const updateColorInput = document.getElementById(
+    'update-color',
+  ) as HTMLInputElement;
+  const updateButton = document.getElementById(
+    'update-car-btn',
+  ) as HTMLButtonElement;
 
-      createCarOnServerAndRender(
-        name,
-        color,
-        carsContainer,
-        carNameInput,
-        carColorInput,
-        garageCounter,
+  if (
+    !createNameInput ||
+    !createColorInput ||
+    !createButton ||
+    !updateNameInput ||
+    !updateColorInput ||
+    !updateButton
+  ) {
+    console.error(
+      'Error: One or more elements for car creation form not found. Check IDs: #create-name, #create-color, #create-car-btn',
+    );
+  } else {
+    createButton.addEventListener('click', () =>
+      handleCreateCar(createNameInput, createColorInput, carsContainerElement),
+    );
+
+    updateButton.addEventListener('click', () => {
+      handleUpdateCar(
+        selectedCarId,
+        updateNameInput,
+        updateButton,
+        updateColorInput,
+        carsContainerElement,
       );
     });
-  } else {
-    console.error(
-      'One or more required elements (button, inputs, container) not found in the DOM.',
-    );
   }
+
+  let selectedCarId: number | null = null;
+
+  carsContainerElement.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+
+    if (target.classList.contains('car-remove-btn')) {
+      const carId = Number(target.dataset.id);
+      if (!isNaN(carId)) {
+        handleDeleteCar(carId, carsContainerElement);
+      }
+    }
+
+    if (target.classList.contains('car-select-btn')) {
+      const carId = Number(target.dataset.id);
+      if (!isNaN(carId)) {
+        selectedCarId = carId;
+        const carElement = target.closest('.car');
+        const carName =
+          carElement?.querySelector('.car-name')?.textContent || '';
+        const carColor =
+          carElement?.querySelector('.car-svg-icon')?.getAttribute('fill') ||
+          '#ffffff';
+
+        updateNameInput.value = carName;
+        updateColorInput.value = carColor;
+        updateNameInput.disabled = false;
+        updateButton.disabled = false;
+        target.style.backgroundColor = '#bdef6f';
+      }
+    }
+  });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeApp();
+});

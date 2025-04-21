@@ -1,8 +1,4 @@
-interface CarData {
-  id: number;
-  name: string;
-  color: string;
-}
+import type { CarData } from './types';
 
 export class Car {
   public id: number;
@@ -11,24 +7,20 @@ export class Car {
   public element: HTMLElement | null = null;
 
   constructor(data: CarData) {
-      this.id = data.id;
-      this.name = data.name;
-      this.color = data.color;
+    this.id = data.id;
+    this.name = data.name;
+    this.color = data.color;
   }
 
   render(): HTMLElement {
-      const carElement = document.createElement('div');
-      carElement.classList.add('car');
-      carElement.dataset.carId = this.id.toString();
+    const carElement = document.createElement('div');
+    carElement.classList.add('car');
+    carElement.dataset.carId = this.id.toString();
 
-      const uniqueIdSuffix = `-${this.id}`;
-      const carSvgId = `car-svg-icon${uniqueIdSuffix}`;
-      const flagPngId = `flag-png-icon${uniqueIdSuffix}`;
-      const selectBtnId = `car-select-btn${uniqueIdSuffix}`;
-      const removeBtnId = `car-remove-btn${uniqueIdSuffix}`;
-      const carNameId = `car-name${uniqueIdSuffix}`;
+    const uniqueIdSuffix = `-${this.id}`;
+    const carSvgId = `car-svg-icon${uniqueIdSuffix}`;
 
-      carElement.innerHTML = `
+    carElement.innerHTML = `
         <div class="car-road-container">
           <span class="car-icon">
             <svg id="${carSvgId}" class="car-svg-icon" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" fill="${this.color}"
@@ -47,17 +39,17 @@ export class Car {
             </svg>
           </span>
           <span class="flag-icon">
-            <img id="${flagPngId}" class="flag-png-icon" src="./flag.png" alt="Finish flag for ${this.name}">
+            <img class="flag-png-icon" src="./flag.png" alt="Finish flag for ${this.name}">
           </span>
         </div>
         <div class="car-controls">
-          <button id="${selectBtnId}">Select</button>
-          <button id="${removeBtnId}">Remove</button>
-          <span id="${carNameId}">${this.name}</span>
+          <button class="car-select-btn" data-id="${this.id}">Select</button>
+          <button class="car-remove-btn" data-id="${this.id}">Remove</button>
+          <span class="car-name">${this.name}</span>
         </div>
       `;
 
-      this.element = carElement;
-      return this.element;
+    this.element = carElement;
+    return this.element;
   }
 }

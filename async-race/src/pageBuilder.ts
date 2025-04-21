@@ -1,7 +1,7 @@
-import { Controls } from './controls';
+import { Controls } from './garageControlsButton';
 
 export class Builder {
-  header(): HTMLElement {
+  buildHeaderButtons(): HTMLElement {
     const headerElement = document.createElement('header');
     const navElement = document.createElement('nav');
 
@@ -22,7 +22,7 @@ export class Builder {
     return headerElement;
   }
 
-  main(): HTMLElement {
+  buildMainTag(): HTMLElement {
     const mainElement = document.createElement('main');
     mainElement.id = 'main-content';
     return mainElement;

@@ -47,7 +47,7 @@ export class Controls {
       'update-color',
       '',
       '#ffffff',
-      true,
+      false,
     );
     const updateButton = this.createButton('update-car-btn', 'Update', true);
 

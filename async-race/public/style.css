@@ -186,8 +186,8 @@ button:hover:not(:disabled) {
   align-items: center;
 }
 
-#car-select-btn,
-#car-remove-btn {
+.car-select-btn,
+.car-remove-btn {
   color: #000000;
   background-color: #bbd0f4;
   border-color: #bbd0f4;

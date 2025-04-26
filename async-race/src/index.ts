@@ -4,6 +4,8 @@ import { handleCreateCar } from './createCarHandler';
 import { handleDeleteCar } from './deleteCarHandler';
 import '../public/style.css';
 import { handleUpdateCar } from './updateCarHandler';
+import { carAnimations } from './types';
+import { handleStopEngine, handleStartEngine } from './engineHandler';
 
 function initializeApp() {
   const appWrapper = document.querySelector('.app-wrapper');
@@ -89,33 +91,53 @@ function initializeApp() {
 
   let selectedCarId: number | null = null;
 
-  carsContainerElement.addEventListener('click', (event) => {
+  carsContainerElement.addEventListener('click', async (event) => {
     const target = event.target as HTMLElement;
+    const carId = Number(target.dataset.id);
+    const carElement = target.closest('.car');
+    const carName = carElement?.querySelector('.car-name')?.textContent || '';
+    const carColor =
+      carElement?.querySelector('.car-svg-icon')?.getAttribute('fill') ||
+      '#ffffff';
 
     if (target.classList.contains('car-remove-btn')) {
-      const carId = Number(target.dataset.id);
+      if (carAnimations.has(carId)) {
+        await handleStopEngine(carId, carsContainerElement);
+      }
       if (!isNaN(carId)) {
         handleDeleteCar(carId, carsContainerElement);
       }
     }
 
     if (target.classList.contains('car-select-btn')) {
-      const carId = Number(target.dataset.id);
-      if (!isNaN(carId)) {
+      if (selectedCarId === carId) {
+        selectedCarId = null;
+        updateNameInput.value = '';
+        updateColorInput.value = '#ffffff';
+        updateNameInput.disabled = true;
+        updateButton.disabled = true;
+        target.style.backgroundColor = '';
+      } else {
         selectedCarId = carId;
-        const carElement = target.closest('.car');
-        const carName =
-          carElement?.querySelector('.car-name')?.textContent || '';
-        const carColor =
-          carElement?.querySelector('.car-svg-icon')?.getAttribute('fill') ||
-          '#ffffff';
-
         updateNameInput.value = carName;
         updateColorInput.value = carColor;
         updateNameInput.disabled = false;
         updateButton.disabled = false;
+
+        const allButtons =
+          carsContainerElement.querySelectorAll('.car-select-btn');
+        allButtons.forEach(
+          (btn) => ((btn as HTMLElement).style.backgroundColor = ''),
+        );
         target.style.backgroundColor = '#bdef6f';
       }
+    }
+
+    if (target.classList.contains('car-stop-btn')) {
+      await handleStopEngine(carId, carsContainerElement);
+    }
+    if (target.classList.contains('car-start-btn')) {
+      await handleStartEngine(carId, carsContainerElement);
     }
   });
 }

@@ -21,8 +21,8 @@ export class Car {
     const carSvgId = `car-svg-icon${uniqueIdSuffix}`;
 
     carElement.innerHTML = `
-        <div class="car-road-container">
-          <span class="car-icon">
+        <div class="car-road-container" data-id="${this.id}">
+          <span class="car-icon" data-id="${this.id}">
             <svg id="${carSvgId}" class="car-svg-icon" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg" fill="${this.color}"
               aria-labelledby="carTitle" role="img">
               <title id="carTitle">Simple Car Icon</title>
@@ -43,6 +43,8 @@ export class Car {
           </span>
         </div>
         <div class="car-controls">
+          <button class="car-start-btn" data-id="${this.id}">Start</button>
+          <button class="car-stop-btn" data-id="${this.id}" disabled>Stop</button>
           <button class="car-select-btn" data-id="${this.id}">Select</button>
           <button class="car-remove-btn" data-id="${this.id}">Remove</button>
           <span class="car-name">${this.name}</span>

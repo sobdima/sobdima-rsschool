@@ -1,4 +1,10 @@
-import type { CarData, CarsResponse, CarCreateData } from './types';
+import type {
+  CarData,
+  CarsResponse,
+  CarCreateData,
+  EngineResponse,
+  DriveModeResponse,
+} from './types';
 
 const BASE_URL = 'http://127.0.0.1:3000';
 
@@ -63,7 +69,7 @@ export async function deleteCarOnServer(id: number): Promise<void> {
 
 export async function updateCarOnServer(
   id: number,
-  data: { name: string; color: string }
+  data: { name: string; color: string },
 ): Promise<CarData> {
   const endpoint = `/garage/${id}`;
   try {
@@ -78,11 +84,61 @@ export async function updateCarOnServer(
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
-    
+
     const updatedCar: CarData = await response.json();
     return updatedCar;
   } catch (error) {
     console.error('Failed to update car on server:', error);
+    throw error;
+  }
+}
+
+export async function controlEngine(
+  id: number,
+  status: 'started' | 'stopped',
+): Promise<EngineResponse> {
+  const endpoint = `/engine?id=${id}&status=${status}`;
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PATCH',
+    });
+    if (!response.ok) {
+      throw new Error(
+        `API Error (${status}): ${response.status} ${response.statusText}`,
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Failed to ${status} engine for car ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function switchToDriveMode(
+  id: number,
+): Promise<DriveModeResponse> {
+  const endpoint = `/engine?id=${id}&status=drive`;
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PATCH',
+    });
+
+    if (response.status === 500) {
+      console.log('ДВИЖОК УПАУ!');
+      console.error(`Engine broke down for car ${id} during drive mode.`);
+      throw new Error(`Engine Failure (500) for car ${id}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        `API Error (drive): ${response.status} ${response.statusText}`,
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Failed to switch car ${id} to drive mode:`, error);
     throw error;
   }
 }

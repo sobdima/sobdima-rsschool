@@ -19,7 +19,8 @@ export async function renderGarageCars(container: HTMLElement): Promise<void> {
   }
 
   if (cars.length === 0) {
-    container.innerHTML = '<p>Garage is empty now. Please create your first car!</p>';
+    container.innerHTML =
+      '<p>Garage is empty now. Please create your first car!</p>';
     return;
   }
 

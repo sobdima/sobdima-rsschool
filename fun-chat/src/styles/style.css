@@ -1,0 +1,186 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+header .user,
+header .title,
+header .buttons {
+  flex: 1;
+  text-align: center;
+}
+
+header .buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+button {
+  width: 80px;
+  height: 40px;
+  padding: 8px 16px;
+  border: 1px solid #888;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: #bcbcbc86;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+aside {
+  width: 250px;
+  min-width: 150px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.search-input {
+  margin-bottom: 10px;
+}
+
+.user-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.user-list li {
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.chat-history {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-input-wrap {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.message-input {
+  flex: 1;
+}
+
+.chat-input button {
+  padding: 8px 16px;
+  margin-left: 10px;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.footer-left,
+.author-link,
+.footer-right {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-left {
+  text-align: left;
+}
+
+.author-link {
+  text-decoration: underline;
+  color: #663399;
+}
+
+.footer-right {
+  text-align: right;
+}
+
+.error {
+  width: 260px;
+  text-align: center;
+  color: red;
+  font-size: 12px;
+}
+
+/* RESPONSE */
+@media (max-width: 768px) {
+  aside {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  header,
+  footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  header .user,
+  header .title,
+  header .buttons {
+    text-align: center;
+  }
+
+  main {
+    flex-direction: column;
+  }
+
+  aside {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .error {
+    width: 200px;
+  }
+}

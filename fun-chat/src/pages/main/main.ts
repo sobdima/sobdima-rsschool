@@ -1,203 +1,211 @@
-/* import {
-  createDiv,
-  createButton,
-  createInput,
-  createListItem,
-  createParagraph,
-  createSpan,
-  createLink,
-} from '../../utils/helpers';
-import { AuthService } from '../../api/auth'; */
-
-/* export class App {
-  constructor(private container: HTMLElement) {}
-
-  init() {
-    const header = this.createHeader();
-    const main = this.createMain();
-    const footer = this.createFooter();
-
-    this.container.append(header, main, footer);
-  }
-
-  private createHeader(): HTMLElement {
-    const header = document.createElement('header');
-
-    const userDiv = createDiv('user', 'your nickname: Dima#46');
-    const titleDiv = createDiv('title', 'Fun Chat');
-    const buttonsDiv = createDiv('buttons');
-
-    const aboutButton = createButton({ text: 'About' });
-    const logoutButton = createButton({ text: 'Logout' });
-
-    logoutButton.addEventListener('click', () => {
-      AuthService.clearCredentials();
-      location.reload();
-    });
-
-    buttonsDiv.append(aboutButton, logoutButton);
-    header.append(userDiv, titleDiv, buttonsDiv);
-
-    return header;
-  }
-
-  private createMain(): HTMLElement {
-    const main = document.createElement('main');
-
-    const aside = document.createElement('aside');
-
-    const searchInput = createInput({
-      type: 'text',
-      placeholder: 'find a conversation partner...',
-      className: 'input search-input',
-    });
-
-    const userList = document.createElement('ul');
-    userList.className = 'user-list';
-
-    ['RobMarvin', 'thurq', 'mashaa', 'vvsar'].forEach((user) => {
-      userList.append(createListItem(user));
-    });
-
-    aside.append(searchInput, userList);
-
-    const section = document.createElement('section');
-    section.className = 'chat';
-
-    const chatHistory = createDiv('chat-history');
-    chatHistory.append(createParagraph('Select a user to send a message'));
-
-    const chatInputWrap = createDiv('chat-input-wrap');
-
-    const messageInput = createInput({
-      type: 'text',
-      placeholder: 'Your message...',
-      className: 'input message-input',
-    });
-
-    const sendButton = createButton({ text: 'Send' });
-
-    chatInputWrap.append(messageInput, sendButton);
-
-    section.append(chatHistory, chatInputWrap);
-    main.append(aside, section);
-
-    return main;
-  }
-
-  private createFooter(): HTMLElement {
-    const footer = document.createElement('footer');
-
-    const footerLeft = createSpan('footer-left', 'RSSchool');
-    const authorLink = createLink(
-      'author-link',
-      'https://github.com/sobdima',
-      'sobdim',
-    );
-    const footerRight = createSpan('footer-right', '2025');
-
-    footer.append(footerLeft, authorLink, footerRight);
-
-    return footer;
-  }
-} */
-
 import { createButton } from '../../components/button';
-import { logoutUser } from '../../api/auth';
-import {
-  LoginRequestPayload,
-  LoginSuccessPayload,
-  ErrorPayload,
-  WSResponse,
-} from '../../utils/types';
+import { createInput } from '../../components/input';
+import { createDiv } from '../../components/div';
+import { createSpan } from '../../components/span';
+import './main.css';
+import { ErrorPayload } from '../../utils/types';
+//import { logOutUser } from '../../api/auth';
+import { handleRouting } from '../../router/router';
+import { loginUser, logoutUser } from '../../api/auth';
 
 export function createChatPage(): HTMLElement {
-  const container = document.createElement('div');
-  container.className = 'chat-container';
+  // === HEADER ===
+  const container = createDiv('chat-container');
+  const header = createDiv('chat-header');
 
-  const title = document.createElement('h2');
-  title.textContent = 'Chat Room';
+  // Получаем имя текущего пользователя из sessionStorage
+  const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
+  const currentUsername = userSession.login || 'Unknown User';
+
+  const userSpan = createSpan('current-user', currentUsername);
+  const chatNameSpan = createSpan('chat-name', 'Fun Chat');
+  const headerButtons = createDiv('header-buttons');
+
+  const aboutButton = createButton({
+    text: 'About',
+    id: 'header-about-button',
+    onClick: () => {
+      window.location.hash = '#about';
+    }
+  });
 
   const logoutButton = createButton({
-    text: 'Logut',
-    id: 'logut-button',
+    text: 'Logout',
+    id: 'header-logout-button',
+    onClick: handleLogOut,
+  });
+  /* logoutButton.addEventListener('click', (e) => {
+    handleLogOut();
+  }) */
+
+  headerButtons.append(aboutButton, logoutButton);
+  header.append(userSpan, chatNameSpan, headerButtons);
+
+
+
+  // === MAIN ===
+  const main = createDiv('chat-main');
+  const leftSection = createDiv('left-section');
+  const rightSection = createDiv('right-section');
+
+  const searchInput = createInput({
+    type: 'text',
+    id: 'user-search',
+    placeholder: 'Search users...'
   });
 
-  logoutButton.addEventListener('click', async () => {
-    /* const login = sessionStorage.getItem('login');
-    const password = sessionStorage.getItem('password'); */
-    const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const login = userSession.login;
-    const password = userSession.password;
-    console.log('login, password', login, password);
+  const usersList = createDiv('users-list');
 
-    if (!login || !password) {
-      /* localStorage.removeItem('isAuthenticated');
-      sessionStorage.removeItem('login');
-      sessionStorage.removeItem('password'); */
-      sessionStorage.setItem('user', JSON.stringify({
-        login: null,
-        password: null,
-        isLogined: false,
-      }));
-      window.location.hash = '#login';
+  leftSection.append(searchInput, usersList);
+
+  // Окно переписки
+  const chatWindow = createDiv('chat-window');
+  const chatPlaceholder = document.createElement('div');
+  chatPlaceholder.className = 'chat-placeholder';
+  chatPlaceholder.textContent = 'Select a user to start chatting';
+  chatWindow.appendChild(chatPlaceholder);
+
+  // Область ввода сообщения
+  const messageInputArea = createDiv('message-input-area');
+
+  const messageInput = createInput({
+    type: 'text',
+    id: 'message-input',
+    placeholder: 'Type your message...'
+  });
+
+  const sendButton = createButton({
+    text: 'Send',
+    id: 'send-message-button',
+    onClick: handleSendMessage
+  });
+
+  // Изначально кнопка отправки неактивна
+  sendButton.disabled = true;
+
+  messageInputArea.append(messageInput, sendButton);
+  rightSection.append(chatWindow, messageInputArea);
+
+  main.append(leftSection, rightSection);
+
+
+
+  // === FOOTER ===
+  const footer = createDiv('chat-footer');
+
+  // Создаем три ссылки-заглушки (вы их потом замените)
+  const link1 = document.createElement('a');
+  link1.href = '#';
+  link1.textContent = 'Link 1';
+
+  const link2 = document.createElement('a');
+  link2.href = '#';
+  link2.textContent = 'Link 2';
+
+  const link3 = document.createElement('a');
+  link3.href = '#';
+  link3.textContent = 'Link 3';
+
+  footer.append(link1, link2, link3);
+
+  // Собираем всю страницу
+  container.append(header, main, footer);
+
+  // Инициализируем обработчики
+  //initializeChatHandlers(messageInput, sendButton, searchInput, usersList);
+
+  return container;
+}
+
+const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+const isReload = navigation.type === "reload";
+const isChatPage = window.location.hash === "#chat";
+
+if (isReload && isChatPage) {
+  sessionStorage.setItem("wasReloaded", "true");
+} else {
+  sessionStorage.removeItem("wasReloaded");
+}
+
+async function handleLogOut() {
+  const username = (localStorage.getItem("username") ?? "").trim();
+  const password = (localStorage.getItem("password") ?? "").trim();
+
+  if (!username || !password) {
+    localStorage.clear();
+    window.location.hash = '#login';
+    handleRouting();
+    return;
+  }
+
+  const wasReloaded = sessionStorage.getItem("wasReloaded") === "true";
+
+  if (wasReloaded) {
+    try {
+      const loginResponse = await loginUser(username, password);
+      if (loginResponse.type !== 'USER_LOGIN') {
+        alert('Re-login failed: ' + (loginResponse.payload as ErrorPayload).error);
+        return;
+      }
+    } catch (error) {
+      alert('Re-login connection error');
       return;
     }
+    sessionStorage.removeItem("wasReloaded");
+  }
 
-    try {
-      const response = await logoutUser(login, password);
-      console.log('kaka', response)
-
-      if (response.type === 'USER_LOGOUT') {
-        /* localStorage.removeItem('isAuthenticated');
-        sessionStorage.removeItem('login');
-        sessionStorage.removeItem('password'); */
-        sessionStorage.setItem('user', JSON.stringify({
-          login: null,
-          password: null,
-          isLogined: false,
-        }));
-        window.location.hash = '#login';
-      } else if (response.type === 'ERROR') {
-        alert('Logout failed: ' + (response.payload as ErrorPayload).error);
-      }
-    } catch (err) {
-      alert('Connection error');
-      console.error(err);
+  try {
+    const response = await logoutUser(username, password);
+    console.log(response);
+    if (response.type === 'USER_LOGOUT') {
+      localStorage.clear();
+      window.location.hash = '#login';
+      handleRouting();
+    } else if (response.type === 'ERROR') {
+      alert('Logout failed: ' + (response.payload as ErrorPayload).error);
     }
+  } catch (error) {
+    alert('Connection error');
+    console.error(error);
+  }
+}
+
+// Обработчик отправки сообщения
+function handleSendMessage() {
+  const messageInput = document.getElementById('message-input') as HTMLInputElement;
+  const message = messageInput.value.trim();
+
+  if (message) {
+    // TODO: Отправка сообщения через WebSocket
+    console.log('Sending message:', message);
+    messageInput.value = '';
+  }
+}
+
+// Инициализация обработчиков событий
+function initializeChatHandlers(
+  messageInput: HTMLInputElement,
+  sendButton: HTMLButtonElement,
+  searchInput: HTMLInputElement,
+  usersList: HTMLDivElement
+) {
+  // Обработчик поиска пользователей
+  searchInput.addEventListener('input', (e) => {
+    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+    // TODO: Фильтрация списка пользователей
+    console.log('Searching for:', searchTerm);
   });
 
-  const messages = document.createElement('div');
-  messages.className = 'messages';
-  messages.style.border = '1px solid #ccc';
-  messages.style.padding = '10px';
-  messages.style.height = '300px';
-  messages.style.overflowY = 'auto';
-
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.placeholder = 'Type a message...';
-
-  const sendButton = document.createElement('button');
-  sendButton.textContent = 'Send';
-
-  // Фиктивная логика отправки
-  sendButton.addEventListener('click', () => {
-    const text = input.value.trim();
-    if (text) {
-      const msg = document.createElement('div');
-      msg.textContent = text;
-      messages.appendChild(msg);
-      input.value = '';
-    }
+  // Обработчик ввода сообщения (активация кнопки отправки)
+  messageInput.addEventListener('input', (e) => {
+    const message = (e.target as HTMLInputElement).value.trim();
+    sendButton.disabled = message.length === 0;
   });
 
-  const inputWrapper = document.createElement('div');
-  inputWrapper.style.display = 'flex';
-  inputWrapper.style.gap = '0.5rem';
-  inputWrapper.style.marginTop = '1rem';
-  inputWrapper.append(input, sendButton);
-
-  container.append(title, logoutButton, messages, inputWrapper);
-  return container;
+  // Отправка сообщения по Enter
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !sendButton.disabled) {
+      handleSendMessage();
+    }
+  });
 }

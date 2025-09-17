@@ -1,66 +1,146 @@
 import {
   WSRequest,
   WSResponse,
-  WSRequestType,
-  WSResponseType,
 } from '../utils/types';
 
-let socket: WebSocket | null = null;
+let websocket: WebSocket | null = null;
 
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
 
-// Создаём WebSocket-подключение
+// Create WebSocket-connection
 export function connect(url: string) {
-  socket = new WebSocket(url);
+  websocket = new WebSocket(url);
 
-  socket.onopen = () => {
-    console.log('[WebSocket] Connected');
+  websocket.onopen = () => {
+    console.log('Dima has opened [WebSocket]');
   };
 
-  socket.onmessage = (event) => {
+  websocket.onmessage = (event) => {
     const message: WSResponse = JSON.parse(event.data);
-    console.log('[WebSocket] Message received:', message);
+    console.log('Dima has a message from [WebSocket]:', message);
 
     if (message.id && listeners[message.id]) {
       listeners[message.id](message);
-      delete listeners[message.id]; // удаляем после ответа
+      delete listeners[message.id];
     }
   };
 
-  socket.onclose = () => {
-    console.warn('[WebSocket] Connection closed');
+  websocket.onclose = () => {
+    console.warn('Dima closed [WebSocket]');
   };
 
-  socket.onerror = (err) => {
-    console.error('[WebSocket] Error:', err);
+  websocket.onerror = (err) => {
+    console.error('Dima has [WebSocket] Error:', err);
   };
 }
 
-// Уникальный id для запроса
-function generateId() {
+
+
+// Generate request identifier (id)
+export function generateId() {
   return Math.random().toString(36).substring(2, 10);
 }
+
 
 // Универсальная функция отправки строго типизированного запроса
 export function sendRequest<
   ReqPayload,
   ResPayload = unknown
->(type: WSRequestType, payload: ReqPayload): Promise<WSResponse<ResPayload>> {
+>(type: string, payload: ReqPayload): Promise<WSResponse<ResPayload>> {
   return new Promise((resolve, reject) => {
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
+    if (!websocket || websocket.readyState !== WebSocket.OPEN) {
       return reject(new Error('WebSocket is not connected'));
     }
 
     const id = generateId();
+
     const request: WSRequest<ReqPayload> = {
       id,
       type,
       payload,
     };
+    console.log("sendRequest", request);
 
     listeners[id] = (message) => {
       resolve(message as WSResponse<ResPayload>);
     };
-    socket.send(JSON.stringify(request));
+    websocket.send(JSON.stringify(request));
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////
+/* const pendingRequests = new Map<string, {resolve: (data: any) => void, reject: (err: any) => void}>();
+
+export function connect(url: string): WebSocket {
+  websocket = new WebSocket(url);
+
+  websocket.onopen = () => {
+    console.log('Dima has opened WebSocket ooohaaa ! ! !');
+  }
+
+  websocket.onerror = (error) => {
+    console.log(`Dima has found an error: ${error}`);
+  }
+
+  websocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Dima has a message from server: ', data);
+
+    const { id, type, payload } = data;
+
+    if (id && pendingRequests.has(id)) {
+      const { resolve, reject } = pendingRequests.get(id)!;
+
+      if (type === "ERROR") {
+        reject(new Error(payload.error));
+      } else {
+        resolve(data);
+      }
+
+      pendingRequests.delete(id);
+    }
+  }
+
+  websocket.onclose = () => {
+    console.log('Dima has closed WebSocket');
+  }
+
+  return websocket;
+}
+
+export function getSocket(): WebSocket | null {
+  return websocket;
+}
+
+export function sendRequest<ReqPayload = any, ResPayload = any>(
+  message:  WSRequest<ReqPayload>
+): Promise<ResPayload> {
+  return new Promise((resolve, reject) => {
+    if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+      reject(new Error("WebSocket is not connected"));
+      return;
+    }
+
+    const id = message.id;
+    pendingRequests.set(id, { resolve, reject });
+    websocket.send(JSON.stringify(message));
+  });
+} */

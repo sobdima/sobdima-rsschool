@@ -19,9 +19,5 @@ export const routes: Route[] = [
   {
     path: '#chat',
     component: createChatPage,
-  },
-  {
-    path: '',
-    component: createLoginForm,
-  },
+  }
 ];

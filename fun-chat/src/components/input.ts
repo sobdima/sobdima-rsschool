@@ -1,4 +1,10 @@
-import { InputOptions } from '../utils/types';
+export interface InputOptions {
+  type: string;
+  placeholder: string;
+  className?: string;
+  id: string;
+  required?: boolean;
+}
 
 export function createInput(options: InputOptions): HTMLInputElement {
   const input = document.createElement('input');

@@ -1,24 +1,18 @@
 import { createInput } from '../../components/input';
 import { createButton } from '../../components/button';
-//import { sendRequest } from '../../api/ws';
+import { createDiv } from '../../components/div';
 import { loginUser } from '../../api/auth';
-import {
-  LoginRequestPayload,
-  LoginSuccessPayload,
-  ErrorPayload,
-  WSResponse,
-} from '../../utils/types';
+import { validateLoginForm } from '../../utils/validations';
+import './login.css';
+import { handleRouting } from '../../router/router';
 
 export function createLoginForm(): HTMLElement {
-  const container = document.createElement('div');
-  container.className = 'login-container';
-
+  const container = createDiv('login-container');
   const title = document.createElement('h2');
   title.textContent = 'LOGIN';
 
   const form = document.createElement('form');
 
-  // Username input
   const usernameInput = createInput({
     type: 'text',
     id: 'user-name',
@@ -26,7 +20,6 @@ export function createLoginForm(): HTMLElement {
     required: true,
   });
 
-  // Password input
   const passwordInput = createInput({
     type: 'password',
     id: 'user-password',
@@ -34,86 +27,109 @@ export function createLoginForm(): HTMLElement {
     required: true,
   });
 
-  const errorMessage = document.createElement('div');
+  // div for displaying username and password validation errors
+  const usernameError = createDiv('validation-error');
+  const passwordError = createDiv('validation-error');
 
-  // Submit button
+  const errorMessage = document.createElement('div');
+  errorMessage.className = 'general-error';
+
   const enterButton = createButton({
     text: 'Enter the chat',
     type: 'submit',
     id: 'submit-button',
   });
 
-  // About button
   const aboutButton = createButton({
     text: 'About',
     type: 'button',
     id: 'about-button',
     onClick: () => {
-      // TODO: handle About
       window.location.hash = '#about';
     },
   });
 
-  // Form submit handler
-  form.addEventListener('submit', (e) =>
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.className = 'login-buttons-wrap';
+  buttonWrapper.append(enterButton, aboutButton);
+
+  form.append(usernameInput, usernameError, passwordInput, passwordError, buttonWrapper, errorMessage);
+  container.append(title, form);
+
+
+  usernameInput.addEventListener('input', () => {
+    validateLoginForm(
+      usernameInput as HTMLInputElement,
+      passwordInput as HTMLInputElement,
+      usernameError,
+      passwordError,
+      enterButton as HTMLButtonElement
+    );
+  });
+
+  passwordInput.addEventListener('input', () => {
+    validateLoginForm(
+      usernameInput as HTMLInputElement,
+      passwordInput as HTMLInputElement,
+      usernameError,
+      passwordError,
+      enterButton as HTMLButtonElement
+    );
+  });
+
+  (enterButton as HTMLButtonElement).disabled = true;
+
+  form.addEventListener('submit', (event) =>
     handleLoginSubmit(
-      e,
+      event,
       usernameInput as HTMLInputElement,
       passwordInput as HTMLInputElement,
       errorMessage
     )
   );
 
-  const buttonWrapper = document.createElement('div');
-  buttonWrapper.className = 'login-buttons-wrap';
-  buttonWrapper.append(enterButton, aboutButton);
-
-  form.append(usernameInput, passwordInput, buttonWrapper, errorMessage);
-  container.append(title, form);
-  window.location.hash = '#login';
-
   return container;
 }
 
 async function handleLoginSubmit(
-  e: Event,
+  event: Event,
   usernameInput: HTMLInputElement,
   passwordInput: HTMLInputElement,
   errorMessage: HTMLElement
 ) {
-  e.preventDefault();
+  event.preventDefault();
 
-  const username = usernameInput.value;
-  const password = passwordInput.value;
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
 
-  console.log('Logging in with:', { username, password });
-  errorMessage.textContent = '';
+  errorMessage.textContent = "";
+  errorMessage.style.display = "none";
 
   try {
     const response = await loginUser(username, password);
-    const userSession = {
-      login: username,
-      password: password,
-      isLogined: true,
-    };
+    console.log(response);
 
     if (response.type === 'USER_LOGIN') {
-      const data = response.payload as LoginSuccessPayload;
-      if (data.user.isLogined) {
-        /* localStorage.setItem('isAuthenticated', 'true');
-        sessionStorage.setItem('login', username);
-        sessionStorage.setItem('password', password); */
-        sessionStorage.setItem('user', JSON.stringify(userSession));
-        window.location.hash = '#chat';
-      } else {
-        errorMessage.textContent = 'Login failed';
-      }
-    } else if (response.type === 'ERROR') {
-      const err = response.payload as ErrorPayload;
-      errorMessage.textContent = err.error;
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      window.location.hash = "#chat";
+      handleRouting();
     }
-  } catch (err) {
-    errorMessage.textContent = 'Connection error';
-    console.error(err);
+
+
+  } catch (error) {
+    console.log('Login error: ', error);
+
+    let message = "Unknown error";
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === "string") {
+      message = error;
+    }
+
+    errorMessage.textContent = `Sorry, ${message}`;
+    errorMessage.style.color = "red";
+    errorMessage.style.display = "block";
   }
 }

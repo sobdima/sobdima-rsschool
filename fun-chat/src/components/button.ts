@@ -1,4 +1,10 @@
-import { ButtonOptions } from '../utils/types';
+export interface ButtonOptions {
+  text: string;
+  type?: 'button' | 'submit' | 'reset';
+  className?: string;
+  id: string;
+  onClick?: () => void;
+}
 
 export function createButton(options: ButtonOptions): HTMLButtonElement {
   const button = document.createElement('button');

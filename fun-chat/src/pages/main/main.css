@@ -76,6 +76,9 @@
 .users-list {
   flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /* Правая секция */

@@ -1,11 +1,16 @@
+import { createSpan } from '../components/span';
 import {
   WSRequest,
   WSResponse,
+  ExternalUserPayload,
+  UserAuthStatus,
+  UserListPayload,
 } from '../utils/types';
 
 let websocket: WebSocket | null = null;
 
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
+const externalUsers = new Map<string, boolean>([]);
 
 // Create WebSocket-connection
 export function connect(url: string) {
@@ -18,6 +23,11 @@ export function connect(url: string) {
   websocket.onmessage = (event) => {
     const message: WSResponse = JSON.parse(event.data);
     console.log('Dima has a message from [WebSocket]:', message);
+
+    if (message.type === "USER_EXTERNAL_LOGIN") {
+
+      updateExternalUsersList();
+    }
 
     if (message.id && listeners[message.id]) {
       listeners[message.id](message);
@@ -42,7 +52,7 @@ export function generateId() {
 }
 
 
-// Универсальная функция отправки строго типизированного запроса
+// Универсальная функция отправки строго типизированного запроса Login & Logout
 export function sendRequest<
   ReqPayload,
   ResPayload = unknown
@@ -68,79 +78,42 @@ export function sendRequest<
   });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////
-/* const pendingRequests = new Map<string, {resolve: (data: any) => void, reject: (err: any) => void}>();
-
-export function connect(url: string): WebSocket {
-  websocket = new WebSocket(url);
-
-  websocket.onopen = () => {
-    console.log('Dima has opened WebSocket ooohaaa ! ! !');
-  }
-
-  websocket.onerror = (error) => {
-    console.log(`Dima has found an error: ${error}`);
-  }
-
-  websocket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Dima has a message from server: ', data);
-
-    const { id, type, payload } = data;
-
-    if (id && pendingRequests.has(id)) {
-      const { resolve, reject } = pendingRequests.get(id)!;
-
-      if (type === "ERROR") {
-        reject(new Error(payload.error));
-      } else {
-        resolve(data);
-      }
-
-      pendingRequests.delete(id);
-    }
-  }
-
-  websocket.onclose = () => {
-    console.log('Dima has closed WebSocket');
-  }
-
-  return websocket;
+export async function getUsersByStatus(status: UserAuthStatus): Promise<WSResponse<UserListPayload>> {
+  const requestType = status === 'authorized' ? 'USER_ACTIVE' : 'USER_INACTIVE';
+  return sendRequest(requestType, null);
 }
 
-export function getSocket(): WebSocket | null {
-  return websocket;
-}
+export async function updateExternalUsersList() {
+  try {
+    // Get both active and inactive users
+    const [activeUsers, inactiveUsers] = await Promise.all([
+      getUsersByStatus('authorized'),
+      getUsersByStatus('unauthorized')
+    ]);
 
-export function sendRequest<ReqPayload = any, ResPayload = any>(
-  message:  WSRequest<ReqPayload>
-): Promise<ResPayload> {
-  return new Promise((resolve, reject) => {
-    if (!websocket || websocket.readyState !== WebSocket.OPEN) {
-      reject(new Error("WebSocket is not connected"));
-      return;
+    console.log("A_A_A", activeUsers);
+
+    const usersList = document.querySelector(".users-list");
+    if (!usersList) return;
+
+    usersList.innerHTML = '';
+
+    // Add active users
+    if (activeUsers.payload?.users) {
+      activeUsers.payload.users.forEach(user => {
+        const userSpan = createSpan('user-name online', user.login);
+        usersList.appendChild(userSpan);
+      })
     }
 
-    const id = message.id;
-    pendingRequests.set(id, { resolve, reject });
-    websocket.send(JSON.stringify(message));
-  });
-} */
+    // Add active users
+    if (inactiveUsers.payload?.users) {
+      inactiveUsers.payload.users.forEach(user => {
+        const userSpan = createSpan('user-name offline', user.login);
+        usersList.appendChild(userSpan);
+      })
+    }
+  } catch (error) {
+    console.error('Dimka Failed to update users list:', error);
+  }
+}

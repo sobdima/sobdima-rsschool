@@ -3,6 +3,24 @@ export type Route = {
   component: () => HTMLElement;
 };
 
+export type UserAuthStatus = 'authorized' | 'unauthorized';
+
+export interface UserListPayload {
+  users: Array<{
+    login: string;
+    isLogined: boolean;
+  }>;
+}
+
+export interface UserActiveResponse extends WSResponse {
+  type: 'USER_ACTIVE';
+  payload: UserListPayload;
+}
+
+export interface UserInactiveResponse extends WSResponse {
+  type: 'USER_INACTIVE';
+  payload: UserListPayload;
+}
 
 // (WebSocket Request)
 export interface WSRequest<T = unknown> {
@@ -19,18 +37,6 @@ export interface WSResponse<T = unknown> {
 
 
 // CLIENT -> SERVER
-/* export interface LoginRequestPayload {
-  user: {
-    login: string;
-    password: string;
-  };
-}
-export interface LogoutRequestPayload {
-  user: {
-    login: string;
-    password: string;
-  };
-} */
 export interface LogRequestPayload {
   user: {
     login: string;
@@ -38,25 +44,21 @@ export interface LogRequestPayload {
   };
 }
 
+
 // SERVER -> CLIENT
-/* export interface LoginSuccessPayload {
-  user: {
-    login: string;
-    isLogined: boolean;
-  };
-}
-export interface LogoutSuccessPayload {
-  user: {
-    login: string;
-    isLogined: boolean;
-  };
-} */
 export interface LogResponsePayload {
   user: {
     login: string;
-    password: string;
+    isLogined: boolean;
   };
 }
 export interface ErrorPayload {
   error: string;
+}
+
+export interface ExternalUserPayload {
+  user: {
+    login: string;
+    isLogined: boolean;
+  }
 }

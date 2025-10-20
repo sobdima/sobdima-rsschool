@@ -7,17 +7,15 @@ import { ErrorPayload } from '../../utils/types';
 //import { logOutUser } from '../../api/auth';
 import { handleRouting } from '../../router/router';
 import { loginUser, logoutUser } from '../../api/auth';
+import { updateExternalUsersList } from '../../api/ws';
 
 export function createChatPage(): HTMLElement {
-  // === HEADER ===
   const container = createDiv('chat-container');
+
+  // === HEADER ===
   const header = createDiv('chat-header');
-
-  // Получаем имя текущего пользователя из sessionStorage
-  const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
-  const currentUsername = userSession.login || 'Unknown User';
-
-  const userSpan = createSpan('current-user', currentUsername);
+  const currentUsername = localStorage.getItem('username') || 'Unknown User';
+  const userNameSpan = createSpan('current-user', currentUsername);
   const chatNameSpan = createSpan('chat-name', 'Fun Chat');
   const headerButtons = createDiv('header-buttons');
 
@@ -37,9 +35,8 @@ export function createChatPage(): HTMLElement {
   /* logoutButton.addEventListener('click', (e) => {
     handleLogOut();
   }) */
-
   headerButtons.append(aboutButton, logoutButton);
-  header.append(userSpan, chatNameSpan, headerButtons);
+  header.append(userNameSpan, chatNameSpan, headerButtons);
 
 
 
@@ -47,6 +44,8 @@ export function createChatPage(): HTMLElement {
   const main = createDiv('chat-main');
   const leftSection = createDiv('left-section');
   const rightSection = createDiv('right-section');
+  const usersList = createDiv('users-list');
+  //updateExternalUsersList();
 
   const searchInput = createInput({
     type: 'text',
@@ -54,18 +53,16 @@ export function createChatPage(): HTMLElement {
     placeholder: 'Search users...'
   });
 
-  const usersList = createDiv('users-list');
-
   leftSection.append(searchInput, usersList);
 
-  // Окно переписки
+  // Message Window
   const chatWindow = createDiv('chat-window');
   const chatPlaceholder = document.createElement('div');
   chatPlaceholder.className = 'chat-placeholder';
   chatPlaceholder.textContent = 'Select a user to start chatting';
   chatWindow.appendChild(chatPlaceholder);
 
-  // Область ввода сообщения
+  // Input message area
   const messageInputArea = createDiv('message-input-area');
 
   const messageInput = createInput({
@@ -80,7 +77,7 @@ export function createChatPage(): HTMLElement {
     onClick: handleSendMessage
   });
 
-  // Изначально кнопка отправки неактивна
+  // SendMessageButton is disabled
   sendButton.disabled = true;
 
   messageInputArea.append(messageInput, sendButton);
@@ -92,23 +89,22 @@ export function createChatPage(): HTMLElement {
 
   // === FOOTER ===
   const footer = createDiv('chat-footer');
-
-  // Создаем три ссылки-заглушки (вы их потом замените)
   const link1 = document.createElement('a');
-  link1.href = '#';
-  link1.textContent = 'Link 1';
+  link1.href = 'https://rs.school/';
+  link1.target = '_blank';
+  link1.rel = 'noopener noreferrer';
+  link1.textContent = 'RSSchool';
 
-  const link2 = document.createElement('a');
-  link2.href = '#';
-  link2.textContent = 'Link 2';
+  const footerYearCreationSpan = createSpan('footer-year', '2025');
 
   const link3 = document.createElement('a');
-  link3.href = '#';
-  link3.textContent = 'Link 3';
+  link3.href = 'https://github.com/sobdima';
+  link3.target = '_blank';
+  link3.rel = 'noopener noreferrer';
+  link3.textContent = 'Dima Sob';
 
-  footer.append(link1, link2, link3);
+  footer.append(link1, footerYearCreationSpan, link3);
 
-  // Собираем всю страницу
   container.append(header, main, footer);
 
   // Инициализируем обработчики

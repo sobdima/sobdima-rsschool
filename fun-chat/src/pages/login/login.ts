@@ -5,6 +5,7 @@ import { loginUser } from '../../api/auth';
 import { validateLoginForm } from '../../utils/validations';
 import './login.css';
 import { handleRouting } from '../../router/router';
+import { updateExternalUsersList } from '../../api/ws';
 
 export function createLoginForm(): HTMLElement {
   const container = createDiv('login-container');
@@ -110,6 +111,7 @@ async function handleLoginSubmit(
     console.log(response);
 
     if (response.type === 'USER_LOGIN') {
+      await updateExternalUsersList();
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
       window.location.hash = "#chat";

@@ -53,7 +53,13 @@ export function createChatPage(): HTMLElement {
     placeholder: 'Search users...'
   });
 
-  leftSection.append(searchInput, usersList);
+  /* const showUsers = createButton({
+    text: 'Show Users',
+    id: 'show-users-button',
+    onClick: updateExternalUsersList
+  }); */
+
+  leftSection.append(searchInput, usersList, /* showUsers */);
 
   // Message Window
   const chatWindow = createDiv('chat-window');
@@ -118,9 +124,9 @@ const isReload = navigation.type === "reload";
 const isChatPage = window.location.hash === "#chat";
 
 if (isReload && isChatPage) {
-  sessionStorage.setItem("wasReloaded", "true");
+  localStorage.setItem("wasReloaded", "true");
 } else {
-  sessionStorage.removeItem("wasReloaded");
+  localStorage.removeItem("wasReloaded");
 }
 
 async function handleLogOut() {
@@ -134,7 +140,7 @@ async function handleLogOut() {
     return;
   }
 
-  const wasReloaded = sessionStorage.getItem("wasReloaded") === "true";
+  /* const wasReloaded = localStorage.getItem("wasReloaded") === "true";
 
   if (wasReloaded) {
     try {
@@ -148,7 +154,7 @@ async function handleLogOut() {
       return;
     }
     sessionStorage.removeItem("wasReloaded");
-  }
+  } */
 
   try {
     const response = await logoutUser(username, password);

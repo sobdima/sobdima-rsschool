@@ -1,4 +1,5 @@
 import { createSpan } from '../components/span';
+import { handleRouting } from '../router/router';
 import {
   WSRequest,
   WSResponse,
@@ -6,26 +7,45 @@ import {
   UserAuthStatus,
   UserListPayload,
 } from '../utils/types';
+import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
 
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
-const externalUsers = new Map<string, boolean>([]);
 
 // Create WebSocket-connection
 export function connect(url: string) {
   websocket = new WebSocket(url);
 
-  websocket.onopen = () => {
-    console.log('Dima has opened [WebSocket]');
+  websocket.onopen = async () => {
+    await updateExternalUsersList();
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+
+    if (username && password) {
+      try {
+        const response = await loginUser(username, password);
+        if (response.type !== 'USER_LOGIN') {
+          localStorage.clear();
+          window.location.hash = '#login';
+          handleRouting();
+        }
+      } catch (error) {
+        console.error('Failed to restore authentication:', error);
+        localStorage.clear();
+        window.location.hash = '#login';
+        handleRouting();
+      }
+    }
+
+
   };
 
   websocket.onmessage = (event) => {
     const message: WSResponse = JSON.parse(event.data);
     console.log('Dima has a message from [WebSocket]:', message);
 
-    if (message.type === "USER_EXTERNAL_LOGIN") {
-
+    if (message.type === "USER_EXTERNAL_LOGIN" || message.type === "USER_EXTERNAL_LOGOUT") {
       updateExternalUsersList();
     }
 
@@ -69,7 +89,6 @@ export function sendRequest<
       type,
       payload,
     };
-    console.log("sendRequest", request);
 
     listeners[id] = (message) => {
       resolve(message as WSResponse<ResPayload>);
@@ -84,14 +103,13 @@ export async function getUsersByStatus(status: UserAuthStatus): Promise<WSRespon
 }
 
 export async function updateExternalUsersList() {
+  const username = localStorage.getItem('username')?.trim();
   try {
     // Get both active and inactive users
     const [activeUsers, inactiveUsers] = await Promise.all([
       getUsersByStatus('authorized'),
       getUsersByStatus('unauthorized')
     ]);
-
-    console.log("A_A_A", activeUsers);
 
     const usersList = document.querySelector(".users-list");
     if (!usersList) return;
@@ -100,17 +118,24 @@ export async function updateExternalUsersList() {
 
     // Add active users
     if (activeUsers.payload?.users) {
-      activeUsers.payload.users.forEach(user => {
-        const userSpan = createSpan('user-name online', user.login);
-        usersList.appendChild(userSpan);
+      activeUsers.payload.users.map(user => {
+        if (user.login !== username) {
+          const userSpan = createSpan('user-name online', user.login);
+          userSpan.style.color = "green";
+          usersList.appendChild(userSpan);
+        }
       })
     }
 
     // Add active users
     if (inactiveUsers.payload?.users) {
-      inactiveUsers.payload.users.forEach(user => {
-        const userSpan = createSpan('user-name offline', user.login);
-        usersList.appendChild(userSpan);
+      inactiveUsers.payload.users.map(user => {
+        if (user.login !== username) {
+          const userSpan = createSpan('user-name offline', user.login);
+          userSpan.style.color = "red";
+          usersList.appendChild(userSpan);
+        }
+
       })
     }
   } catch (error) {

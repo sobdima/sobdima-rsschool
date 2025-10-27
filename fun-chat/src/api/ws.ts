@@ -18,14 +18,16 @@ export function connect(url: string) {
   websocket = new WebSocket(url);
 
   websocket.onopen = async () => {
-    await updateExternalUsersList();
     const username = localStorage.getItem('username');
     const password = localStorage.getItem('password');
 
     if (username && password) {
       try {
         const response = await loginUser(username, password);
-        if (response.type !== 'USER_LOGIN') {
+        if (response.type === 'USER_LOGIN') {
+          window.location.hash = '#chat';
+          handleRouting();
+        } else {
           localStorage.clear();
           window.location.hash = '#login';
           handleRouting();
@@ -37,16 +39,19 @@ export function connect(url: string) {
         handleRouting();
       }
     }
-
-
   };
 
-  websocket.onmessage = (event) => {
+  websocket.onmessage = async (event) => {
     const message: WSResponse = JSON.parse(event.data);
-    console.log('Dima has a message from [WebSocket]:', message);
+
+    if (message.type === "USER_LOGIN") {
+      setTimeout(() => {
+        updateExternalUsersList();
+      }, 300)
+    }
 
     if (message.type === "USER_EXTERNAL_LOGIN" || message.type === "USER_EXTERNAL_LOGOUT") {
-      updateExternalUsersList();
+      await updateExternalUsersList();
     }
 
     if (message.id && listeners[message.id]) {
@@ -104,41 +109,44 @@ export async function getUsersByStatus(status: UserAuthStatus): Promise<WSRespon
 
 export async function updateExternalUsersList() {
   const username = localStorage.getItem('username')?.trim();
+  const usersList = document.querySelector('.users-list');
+
   try {
-    // Get both active and inactive users
     const [activeUsers, inactiveUsers] = await Promise.all([
       getUsersByStatus('authorized'),
       getUsersByStatus('unauthorized')
     ]);
 
-    const usersList = document.querySelector(".users-list");
-    if (!usersList) return;
+    //console.log(inactiveUsers);
+
+    if(!usersList) return;
 
     usersList.innerHTML = '';
 
-    // Add active users
-    if (activeUsers.payload?.users) {
-      activeUsers.payload.users.map(user => {
+    // Helper function to render users
+    const renderUsers = (users: UserListPayload['users'], isOnline: boolean) => {
+      users.forEach(user => {
         if (user.login !== username) {
-          const userSpan = createSpan('user-name online', user.login);
-          userSpan.style.color = "green";
+          const userSpan = createSpan(
+            `user-name ${isOnline ? 'online' : 'offline'}`, 
+            user.login
+          );
+          userSpan.style.color = isOnline ? "green" : "red";
           usersList.appendChild(userSpan);
         }
-      })
+      });
+    };
+
+    // Render active users
+    if (activeUsers.payload?.users) {
+      renderUsers(activeUsers.payload.users, true);
     }
 
-    // Add active users
+    // Render inactive users
     if (inactiveUsers.payload?.users) {
-      inactiveUsers.payload.users.map(user => {
-        if (user.login !== username) {
-          const userSpan = createSpan('user-name offline', user.login);
-          userSpan.style.color = "red";
-          usersList.appendChild(userSpan);
-        }
-
-      })
+      renderUsers(inactiveUsers.payload.users, false);
     }
   } catch (error) {
-    console.error('Dimka Failed to update users list:', error);
+    console.error('Failed to update users list:', error);
   }
 }

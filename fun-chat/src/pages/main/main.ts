@@ -115,7 +115,7 @@ export function createChatPage(): HTMLElement {
 
   // Инициализируем обработчики
   //initializeChatHandlers(messageInput, sendButton, searchInput, usersList);
-
+  //const usersList = document.querySelector(".users-list");
   return container;
 }
 

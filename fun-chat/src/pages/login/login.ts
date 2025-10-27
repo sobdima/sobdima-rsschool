@@ -108,14 +108,14 @@ async function handleLoginSubmit(
 
   try {
     const response = await loginUser(username, password);
-    console.log(response);
+    //console.log(response);
 
     if (response.type === 'USER_LOGIN') {
-      await updateExternalUsersList();
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
       window.location.hash = "#chat";
       handleRouting();
+      //await updateExternalUsersList();
     }
 
 

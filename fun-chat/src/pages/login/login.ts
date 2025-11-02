@@ -5,7 +5,6 @@ import { loginUser } from '../../api/auth';
 import { validateLoginForm } from '../../utils/validations';
 import './login.css';
 import { handleRouting } from '../../router/router';
-import { updateExternalUsersList } from '../../api/ws';
 
 export function createLoginForm(): HTMLElement {
   const container = createDiv('login-container');
@@ -28,7 +27,6 @@ export function createLoginForm(): HTMLElement {
     required: true,
   });
 
-  // div for displaying username and password validation errors
   const usernameError = createDiv('validation-error');
   const passwordError = createDiv('validation-error');
 
@@ -108,14 +106,12 @@ async function handleLoginSubmit(
 
   try {
     const response = await loginUser(username, password);
-    //console.log(response);
 
     if (response.type === 'USER_LOGIN') {
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
       window.location.hash = "#chat";
       handleRouting();
-      //await updateExternalUsersList();
     }
 
 

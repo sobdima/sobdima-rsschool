@@ -3,14 +3,51 @@ export type Route = {
   component: () => HTMLElement;
 };
 
-export type UserAuthStatus = 'authorized' | 'unauthorized';
 
-export interface UserListPayload {
-  users: Array<{
+//WEBSOCKET
+export interface WSRequest<T = unknown> {
+  id: string;
+  type: string;
+  payload: T;
+}
+
+export interface WSResponse<T = unknown> {
+  id: string | null;
+  type: string;
+  payload: T;
+}
+
+
+//LOGIN
+export interface LogRequestPayload {
+  user: {
+    login: string;
+    password: string;
+  };
+}
+
+export interface LogResponsePayload {
+  user: {
     login: string;
     isLogined: boolean;
-  }>;
+  };
 }
+export interface ErrorPayload {
+  error: string;
+}
+
+
+// USERS
+export interface User {
+  login: string;
+  isLogined: boolean;
+}
+
+export interface UserListPayload {
+  users: User[];
+}
+
+export type UserAuthStatus = 'authorized' | 'unauthorized';
 
 export interface UserActiveResponse extends WSResponse {
   type: 'USER_ACTIVE';
@@ -22,43 +59,44 @@ export interface UserInactiveResponse extends WSResponse {
   payload: UserListPayload;
 }
 
-// (WebSocket Request)
-export interface WSRequest<T = unknown> {
-  id: string;
-  type: string;
-  payload: T;
-}
-// (WebSocket Response)
-export interface WSResponse<T = unknown> {
-  id: string | null;
-  type: string;
-  payload: T;
-}
-
-
-// CLIENT -> SERVER
-export interface LogRequestPayload {
-  user: {
-    login: string;
-    password: string;
-  };
-}
-
-
-// SERVER -> CLIENT
-export interface LogResponsePayload {
-  user: {
-    login: string;
-    isLogined: boolean;
-  };
-}
-export interface ErrorPayload {
-  error: string;
-}
-
 export interface ExternalUserPayload {
   user: {
     login: string;
     isLogined: boolean;
   }
+}
+
+
+// MESSAGES
+export interface MessageStatus {
+  isDelivered: boolean;
+  isReaded: boolean;
+  isEdited: boolean;
+}
+
+export interface Message {
+  id: string;
+  from: string;
+  to: string;
+  text: string;
+  datetime: number;
+  status: MessageStatus;
+}
+
+export interface MessageHistoryRequest {
+  user: {
+    login: string;
+  }
+}
+
+export interface MessageHistoryResponse {
+  messages: Message[];
+}
+
+export interface MsgSendPayload {
+  message: Message;
+}
+
+export interface MsgSendResponse extends WSResponse<MsgSendPayload> {
+  type: 'MSG_SEND';
 }

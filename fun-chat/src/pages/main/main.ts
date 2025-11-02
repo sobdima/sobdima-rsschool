@@ -4,10 +4,8 @@ import { createDiv } from '../../components/div';
 import { createSpan } from '../../components/span';
 import './main.css';
 import { ErrorPayload } from '../../utils/types';
-//import { logOutUser } from '../../api/auth';
 import { handleRouting } from '../../router/router';
-import { loginUser, logoutUser } from '../../api/auth';
-import { updateExternalUsersList } from '../../api/ws';
+import { logoutUser } from '../../api/auth';
 
 export function createChatPage(): HTMLElement {
   const container = createDiv('chat-container');
@@ -32,9 +30,7 @@ export function createChatPage(): HTMLElement {
     id: 'header-logout-button',
     onClick: handleLogOut,
   });
-  /* logoutButton.addEventListener('click', (e) => {
-    handleLogOut();
-  }) */
+
   headerButtons.append(aboutButton, logoutButton);
   header.append(userNameSpan, chatNameSpan, headerButtons);
 
@@ -45,7 +41,6 @@ export function createChatPage(): HTMLElement {
   const leftSection = createDiv('left-section');
   const rightSection = createDiv('right-section');
   const usersList = createDiv('users-list');
-  //updateExternalUsersList();
 
   const searchInput = createInput({
     type: 'text',
@@ -53,13 +48,7 @@ export function createChatPage(): HTMLElement {
     placeholder: 'Search users...'
   });
 
-  /* const showUsers = createButton({
-    text: 'Show Users',
-    id: 'show-users-button',
-    onClick: updateExternalUsersList
-  }); */
-
-  leftSection.append(searchInput, usersList, /* showUsers */);
+  leftSection.append(searchInput, usersList);
 
   // Message Window
   const chatWindow = createDiv('chat-window');
@@ -76,22 +65,19 @@ export function createChatPage(): HTMLElement {
     id: 'message-input',
     placeholder: 'Type your message...'
   });
+  messageInput.disabled = true;
 
   const sendButton = createButton({
     text: 'Send',
     id: 'send-message-button',
-    onClick: handleSendMessage
+    onClick: () => {}
   });
-
-  // SendMessageButton is disabled
   sendButton.disabled = true;
 
   messageInputArea.append(messageInput, sendButton);
   rightSection.append(chatWindow, messageInputArea);
 
   main.append(leftSection, rightSection);
-
-
 
   // === FOOTER ===
   const footer = createDiv('chat-footer');
@@ -110,23 +96,9 @@ export function createChatPage(): HTMLElement {
   link3.textContent = 'Dima Sob';
 
   footer.append(link1, footerYearCreationSpan, link3);
-
   container.append(header, main, footer);
 
-  // Инициализируем обработчики
-  //initializeChatHandlers(messageInput, sendButton, searchInput, usersList);
-  //const usersList = document.querySelector(".users-list");
   return container;
-}
-
-const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
-const isReload = navigation.type === "reload";
-const isChatPage = window.location.hash === "#chat";
-
-if (isReload && isChatPage) {
-  localStorage.setItem("wasReloaded", "true");
-} else {
-  localStorage.removeItem("wasReloaded");
 }
 
 async function handleLogOut() {
@@ -139,22 +111,6 @@ async function handleLogOut() {
     handleRouting();
     return;
   }
-
-  /* const wasReloaded = localStorage.getItem("wasReloaded") === "true";
-
-  if (wasReloaded) {
-    try {
-      const loginResponse = await loginUser(username, password);
-      if (loginResponse.type !== 'USER_LOGIN') {
-        alert('Re-login failed: ' + (loginResponse.payload as ErrorPayload).error);
-        return;
-      }
-    } catch (error) {
-      alert('Re-login connection error');
-      return;
-    }
-    sessionStorage.removeItem("wasReloaded");
-  } */
 
   try {
     const response = await logoutUser(username, password);
@@ -170,44 +126,4 @@ async function handleLogOut() {
     alert('Connection error');
     console.error(error);
   }
-}
-
-// Обработчик отправки сообщения
-function handleSendMessage() {
-  const messageInput = document.getElementById('message-input') as HTMLInputElement;
-  const message = messageInput.value.trim();
-
-  if (message) {
-    // TODO: Отправка сообщения через WebSocket
-    console.log('Sending message:', message);
-    messageInput.value = '';
-  }
-}
-
-// Инициализация обработчиков событий
-function initializeChatHandlers(
-  messageInput: HTMLInputElement,
-  sendButton: HTMLButtonElement,
-  searchInput: HTMLInputElement,
-  usersList: HTMLDivElement
-) {
-  // Обработчик поиска пользователей
-  searchInput.addEventListener('input', (e) => {
-    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
-    // TODO: Фильтрация списка пользователей
-    console.log('Searching for:', searchTerm);
-  });
-
-  // Обработчик ввода сообщения (активация кнопки отправки)
-  messageInput.addEventListener('input', (e) => {
-    const message = (e.target as HTMLInputElement).value.trim();
-    sendButton.disabled = message.length === 0;
-  });
-
-  // Отправка сообщения по Enter
-  messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !sendButton.disabled) {
-      handleSendMessage();
-    }
-  });
 }

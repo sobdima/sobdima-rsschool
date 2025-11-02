@@ -1,16 +1,9 @@
-import { createSpan } from '../components/span';
 import { handleRouting } from '../router/router';
-import {
-  WSRequest,
-  WSResponse,
-  ExternalUserPayload,
-  UserAuthStatus,
-  UserListPayload,
-} from '../utils/types';
+import { updateExternalUsersList } from '../services/usersService';
+import { WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
-
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
 
 // Create WebSocket-connection
@@ -69,15 +62,12 @@ export function connect(url: string) {
   };
 }
 
-
-
 // Generate request identifier (id)
 export function generateId() {
   return Math.random().toString(36).substring(2, 10);
 }
 
-
-// Универсальная функция отправки строго типизированного запроса Login & Logout
+// Universal sendRequest function
 export function sendRequest<
   ReqPayload,
   ResPayload = unknown
@@ -102,51 +92,15 @@ export function sendRequest<
   });
 }
 
-export async function getUsersByStatus(status: UserAuthStatus): Promise<WSResponse<UserListPayload>> {
-  const requestType = status === 'authorized' ? 'USER_ACTIVE' : 'USER_INACTIVE';
-  return sendRequest(requestType, null);
-}
-
-export async function updateExternalUsersList() {
-  const username = localStorage.getItem('username')?.trim();
-  const usersList = document.querySelector('.users-list');
-
-  try {
-    const [activeUsers, inactiveUsers] = await Promise.all([
-      getUsersByStatus('authorized'),
-      getUsersByStatus('unauthorized')
-    ]);
-
-    //console.log(inactiveUsers);
-
-    if(!usersList) return;
-
-    usersList.innerHTML = '';
-
-    // Helper function to render users
-    const renderUsers = (users: UserListPayload['users'], isOnline: boolean) => {
-      users.forEach(user => {
-        if (user.login !== username) {
-          const userSpan = createSpan(
-            `user-name ${isOnline ? 'online' : 'offline'}`, 
-            user.login
-          );
-          userSpan.style.color = isOnline ? "green" : "red";
-          usersList.appendChild(userSpan);
-        }
-      });
-    };
-
-    // Render active users
-    if (activeUsers.payload?.users) {
-      renderUsers(activeUsers.payload.users, true);
+/* export async function sendMessage(to: string, text: string): Promise<WSResponse<MsgSendPayload>> {
+  const from = localStorage.getItem('username') || '';
+  const payload = {
+    message: {
+      from,
+      to,
+      text,
+      datetime: Date.now(),
     }
-
-    // Render inactive users
-    if (inactiveUsers.payload?.users) {
-      renderUsers(inactiveUsers.payload.users, false);
-    }
-  } catch (error) {
-    console.error('Failed to update users list:', error);
-  }
-}
+  };
+  return sendRequest('MSG_SEND', payload);
+} */

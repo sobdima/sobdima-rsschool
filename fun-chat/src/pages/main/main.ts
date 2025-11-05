@@ -2,10 +2,11 @@ import { createButton } from '../../components/button';
 import { createInput } from '../../components/input';
 import { createDiv } from '../../components/div';
 import { createSpan } from '../../components/span';
-import './main.css';
 import { ErrorPayload } from '../../utils/types';
 import { handleRouting } from '../../router/router';
 import { logoutUser } from '../../api/auth';
+import './main.css';
+import './chat.css';
 
 export function createChatPage(): HTMLElement {
   const container = createDiv('chat-container');

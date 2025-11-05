@@ -91,16 +91,3 @@ export function sendRequest<
     websocket.send(JSON.stringify(request));
   });
 }
-
-/* export async function sendMessage(to: string, text: string): Promise<WSResponse<MsgSendPayload>> {
-  const from = localStorage.getItem('username') || '';
-  const payload = {
-    message: {
-      from,
-      to,
-      text,
-      datetime: Date.now(),
-    }
-  };
-  return sendRequest('MSG_SEND', payload);
-} */

@@ -89,15 +89,22 @@
   color: black;
 }
 
+
+.user-name.selected {
+  color: #0050b3;
+}
+
 /* RIGHT SECTION */
 .chat-window {
   flex: 1;
-  padding: 1rem;
+  padding: 1.5rem;
   overflow-y: auto;
   background-color: #f8f9fa;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .chat-placeholder {

@@ -1,10 +1,12 @@
 import { handleRouting } from '../router/router';
+import { handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
-import { WSRequest, WSResponse } from '../utils/types';
+import { MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
+const processedMessages = new Set<string>();
 
 // Create WebSocket-connection
 export function connect(url: string) {
@@ -20,6 +22,17 @@ export function connect(url: string) {
         if (response.type === 'USER_LOGIN') {
           window.location.hash = '#chat';
           handleRouting();
+          
+          // Получаем список всех пользователей и восстанавливаем счетчики
+          /* const userEls = Array.from(document.querySelectorAll('.user-name'));
+          const usernames = userEls
+            .map(el => el.textContent?.trim())
+            .filter((name): name is string => !!name);
+  
+          console.log('PUK-1', usernames) */
+          //await restoreMessageCounters(usernames);
+          await updateExternalUsersList();
+
         } else {
           localStorage.clear();
           window.location.hash = '#login';
@@ -37,14 +50,41 @@ export function connect(url: string) {
   websocket.onmessage = async (event) => {
     const message: WSResponse = JSON.parse(event.data);
 
+    console.log('message от сервера', message);
+
     if (message.type === "USER_LOGIN") {
       setTimeout(() => {
         updateExternalUsersList();
       }, 300)
+//////////////////////////////////////////////// НОВЬЁ /////////////////////////////////////////////////////
+      setTimeout(() => {
+        const userEls = Array.from(document.querySelectorAll('.user-name'));
+        const usernames = userEls.map(el => el.textContent?.trim()).filter((name): name is string => !!name);
+        console.log('PUK-1', usernames)
+        restoreMessageCounters(usernames)
+      }, 400)
+//////////////////////////////////////////////// НОВЬЁ /////////////////////////////////////////////////////
     }
 
     if (message.type === "USER_EXTERNAL_LOGIN" || message.type === "USER_EXTERNAL_LOGOUT") {
       await updateExternalUsersList();
+    }
+
+    if (message.type === "MSG_SEND" && message.id === null) {
+      const messageKey = JSON.stringify({
+        from: (message.payload as MsgSendPayload).message.from,
+        text: (message.payload as MsgSendPayload).message.text,
+        time: (message.payload as MsgSendPayload).message.datetime,
+      });
+
+      if (!processedMessages.has(messageKey)) {
+        processedMessages.add(messageKey);
+        handleIncomingMessage((message.payload as MsgSendPayload).message);
+
+        setTimeout(() => {
+          processedMessages.delete(messageKey);
+        }, 5000);
+      }
     }
 
     if (message.id && listeners[message.id]) {

@@ -1,15 +1,7 @@
 import { sendRequest } from "../api/ws";
+import { appendMessage } from "../ui/chatUI";
 import { Message, MessageHistoryRequest, MessageHistoryResponse, MsgSendPayload, WSResponse } from "../utils/types";
-
-let selectedUser: string | null = null;
-
-export function setSelectedUser(username: string | null) {
-  selectedUser = username;
-  updateSendControls();
-}
-export function getSelectedUser() {
-  return selectedUser;
-}
+import { getSelectedUser, selectedUser } from "./usersService";
 
 export function updateSendControls() {
   const sendButton = document.getElementById('send-message-button') as HTMLButtonElement;
@@ -44,11 +36,9 @@ export function setupMessageSending() {
 
     try {
       const response = await sendMessage(to, text);
-
       const sentMsg = response.payload?.message;
-      console.log('респонс при отправке сообщения', sentMsg);
-      // 3️⃣ Добавляем его в чат
-      //if (sentMsg) appendMessage(sentMsg, true);
+
+      if (sentMsg) appendMessage(sentMsg);
 
       input.value = '';
     } catch (err) {
@@ -79,4 +69,3 @@ export async function getMessageHistory(userLogin: string): Promise<WSResponse<M
 
   return sendRequest('MSG_FROM_USER', payload);
 }
-

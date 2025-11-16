@@ -22,17 +22,7 @@ export function connect(url: string) {
         if (response.type === 'USER_LOGIN') {
           window.location.hash = '#chat';
           handleRouting();
-          
-          // Получаем список всех пользователей и восстанавливаем счетчики
-          /* const userEls = Array.from(document.querySelectorAll('.user-name'));
-          const usernames = userEls
-            .map(el => el.textContent?.trim())
-            .filter((name): name is string => !!name);
-  
-          console.log('PUK-1', usernames) */
-          //await restoreMessageCounters(usernames);
           await updateExternalUsersList();
-
         } else {
           localStorage.clear();
           window.location.hash = '#login';
@@ -50,20 +40,21 @@ export function connect(url: string) {
   websocket.onmessage = async (event) => {
     const message: WSResponse = JSON.parse(event.data);
 
-    console.log('message от сервера', message);
+    ///////////////////////////////////////////
+    //console.log('message от сервера', message);
+    ///////////////////////////////////////////
 
     if (message.type === "USER_LOGIN") {
       setTimeout(() => {
         updateExternalUsersList();
       }, 300)
-//////////////////////////////////////////////// НОВЬЁ /////////////////////////////////////////////////////
+
       setTimeout(() => {
         const userEls = Array.from(document.querySelectorAll('.user-name'));
         const usernames = userEls.map(el => el.textContent?.trim()).filter((name): name is string => !!name);
-        console.log('PUK-1', usernames)
+
         restoreMessageCounters(usernames)
-      }, 400)
-//////////////////////////////////////////////// НОВЬЁ /////////////////////////////////////////////////////
+      }, 350)
     }
 
     if (message.type === "USER_EXTERNAL_LOGIN" || message.type === "USER_EXTERNAL_LOGOUT") {
@@ -85,6 +76,28 @@ export function connect(url: string) {
           processedMessages.delete(messageKey);
         }, 5000);
       }
+    }
+
+    if (message.type === "MSG_DELIVER" && message.id === null) {
+      const messageElement = document.querySelectorAll('.message.sent');
+
+      messageElement.forEach((el) => {
+        const statusDiv = el.querySelector('.message-status');
+        if (statusDiv) {
+          statusDiv.textContent = '✓';
+        }
+      })
+    }
+
+    if (message.type === "MSG_READ" && message.id === null) {
+      const messageElement = document.querySelectorAll('.message.sent');
+
+      messageElement.forEach((el) => {
+        const statusDiv = el.querySelector('.message-status');
+        if (statusDiv) {
+          statusDiv.textContent = '✓✓';
+        }
+      })
     }
 
     if (message.id && listeners[message.id]) {

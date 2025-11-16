@@ -1,15 +1,16 @@
 import { createButton } from "../components/button";
 import { createSpan } from "../components/span";
-import { getMessageHistory, setupMessageSending, updateSendControls } from "../services/messagesService";
+import { getMessageHistory, setupMessageSending } from "../services/messagesService";
 import { messageCounters, resetMessageCounter } from "../services/unreadMessagesCounterService";
+import { cleanupMessageObserver, observeUnreadMessages } from "../services/unreadMsgObserver";
 import { setSelectedUser } from "../services/usersService";
+import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message, User } from "../utils/types";
 
 const USERNAME_KEY = 'username';
-//const username = localStorage.getItem(USERNAME_KEY);
+const username = localStorage.getItem(USERNAME_KEY);
 
 export function renderUsersList(active: User[], inactive: User[]) {
-  const username = localStorage.getItem(USERNAME_KEY);
   const usersList = document.querySelector('.users-list');
   if (!usersList) return;
 
@@ -19,7 +20,7 @@ export function renderUsersList(active: User[], inactive: User[]) {
     users.forEach((user) => {
       if (user.login === username) return;
 
-      const userSpan = createSpan(`user-name ${isOnline ? 'online' : 'offline'}`, user.login);    //`${isOnline ? `🟢 ${user.login}` : user.login}`
+      const userSpan = createSpan(`user-name ${isOnline ? 'online' : 'offline'}`, user.login);
 
       const messageCount = messageCounters[user.login] || 0;
       if (messageCount > 0) {
@@ -39,7 +40,10 @@ export function renderUsersList(active: User[], inactive: User[]) {
 
         const history = await getMessageHistory(user.login);
 
-        if (history.payload.messages) renderMessageHistory(history.payload.messages);
+        if (history.payload.messages) {
+          renderMessageHistory(history.payload.messages);
+        };
+
         createCloseChatButton();
       })
 
@@ -57,11 +61,28 @@ export function renderMessageHistory(messages: Message[]) {
 
   chatArea.innerHTML = '';
 
-  messages.forEach(message => {
+  const firstUnreadIndex = messages.findIndex(msg =>
+    msg.to === username && !msg.status.isReaded
+  );
+
+  messages.forEach((message, index) => {
+    if (index === firstUnreadIndex && firstUnreadIndex !== -1) {
+      const divider = createUnreadDivider();
+      chatArea.appendChild(divider);
+    }
+
     chatArea.appendChild(createMessageElement(message));
   });
 
-  chatArea.scrollTop = chatArea.scrollHeight;
+  setTimeout(() => {
+    scrollToFirstUnread();
+  }, 100);
+
+  ///////////////////////////////////////
+  setTimeout(() => {
+    observeUnreadMessages()
+  }, 200);
+  ///////////////////////////////////////
 }
 
 function createCloseChatButton(): HTMLButtonElement | null {
@@ -84,6 +105,10 @@ function createCloseChatButton(): HTMLButtonElement | null {
 
     chatArea.innerHTML = '';
     btn.remove();
+
+    // 👇 Очищаем observer при закрытии чата
+    cleanupMessageObserver();
+    //////////////////////////////////////////
   })
 
   headerArea.prepend(btn);
@@ -98,19 +123,29 @@ export function appendMessage(message: Message) {
   chatArea.appendChild(createMessageElement(message));
 }
 
-  function createMessageElement(message: Message): HTMLDivElement {
+function createMessageElement(message: Message): HTMLDivElement {
   const username = localStorage.getItem(USERNAME_KEY);
   if(!username) throw new Error('Username not found in localStorage');
 
   const messageElement = document.createElement('div');
   const isSentMessage = message.from === username;
+  const isUnread = !isSentMessage && !message.status.isReaded;
+
   messageElement.classList.add('message', isSentMessage ? 'sent' : 'received');
+
+  // 👇 Добавляем ID сообщения для отслеживания
+  messageElement.setAttribute('data-message-id', message.id);
+  ////////////////////////////////////////////
+
+  if (isUnread) {
+    messageElement.setAttribute('data-unread', 'true');
+  }
 
   const time = new Date(message.datetime).toLocaleTimeString();
 
   const statusIcons = {
       delivered: message.status.isDelivered ? '✓' : '',
-      read: message.status.isReaded ? '✓✓' : '',
+      read: message.status.isReaded ? '✓' : '',
       edited: message.status.isEdited ? '(edited)' : ''
     };
 
@@ -140,4 +175,20 @@ export function appendMessage(message: Message) {
   }
 
   return messageElement;
+}
+
+function scrollToFirstUnread() {
+  const chatArea = document.querySelector('.chat-window');
+  if (!chatArea) return;
+
+  const firstUnread = chatArea.querySelector('[data-unread="true"]') as HTMLElement;
+
+  if (firstUnread) {
+    firstUnread.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+  } else {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
 }

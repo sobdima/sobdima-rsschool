@@ -55,9 +55,8 @@ export function resetMessageCounter(username: string) {
 }
 
 export async function restoreMessageCounters(usernames: string[]) {
-  ////////////////////////////////////////////////////////////////////НАДА В ЭТОМ КОДЕ РАЗОБРАТЬСЯ !!!!!!!!! ТАКАЯ ЗАДАЧА......................//////////////////
   try {
-    const requests = usernames.map(username => 
+    const requests = usernames.map(username =>
       getMessageHistory(username)
         .then(res => ({ username, res }))
         .catch(() => ({ username, res: null }))
@@ -75,7 +74,6 @@ export async function restoreMessageCounters(usernames: string[]) {
       ).length;
 
       messageCounters[username] = undeliveredCount;
-      console.log('PUK-2', messageCounters)
 
       if (undeliveredCount > 0) {
         updateUserMessagesCounter(username, undeliveredCount);

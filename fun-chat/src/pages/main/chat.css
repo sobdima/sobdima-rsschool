@@ -66,3 +66,20 @@
   margin-left: 5px;
   font-size: 12px;
 }
+
+.unread-divider {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  color: #007bff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.unread-divider span {
+  padding: 0 10px;
+}
+
+[data-unread="true"] {
+  scroll-margin-top: 40px;
+}

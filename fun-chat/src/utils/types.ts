@@ -97,6 +97,17 @@ export interface MsgSendPayload {
   message: Message;
 }
 
-export interface MsgSendResponse extends WSResponse<MsgSendPayload> {
-  type: 'MSG_SEND';
+export interface MsgReadRequest {
+  message: {
+    id: string;
+  }
+}
+
+export interface MsgReadResponse {
+  message: {
+    id: string;
+    status: {
+      isReaded: boolean;
+    }
+  }
 }

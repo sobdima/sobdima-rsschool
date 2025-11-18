@@ -28,6 +28,14 @@ function incrementMessageCounter(username: string) {
   updateUserMessagesCounter(username, messageCounters[username]);
 }
 
+export function decrementMessageCounter(username: string) {
+  if (messageCounters[username] && messageCounters[username] > 0) {
+    messageCounters[username]--;
+    localStorage.setItem(MESSAGE_COUNTERS_KEY, JSON.stringify(messageCounters));
+    updateUserMessagesCounter(username, messageCounters[username]);
+  }
+}
+
 export function updateUserMessagesCounter(username: string, count: number) {
   const userElements = document.querySelectorAll('.user-name');
 
@@ -44,7 +52,7 @@ export function updateUserMessagesCounter(username: string, count: number) {
   });
 }
 
-export function resetMessageCounter(username: string) {
+/* export function resetMessageCounter(username: string) {
   const userElements = document.querySelectorAll('.user-name');
 
   if (messageCounters[username]) {
@@ -52,7 +60,7 @@ export function resetMessageCounter(username: string) {
     localStorage.setItem(MESSAGE_COUNTERS_KEY, JSON.stringify(messageCounters));
     updateUserMessagesCounter(username, 0);
   }
-}
+} */
 
 export async function restoreMessageCounters(usernames: string[]) {
   try {

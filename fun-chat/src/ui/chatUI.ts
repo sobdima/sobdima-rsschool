@@ -1,7 +1,7 @@
 import { createButton } from "../components/button";
 import { createSpan } from "../components/span";
 import { getMessageHistory, setupMessageSending } from "../services/messagesService";
-import { messageCounters, resetMessageCounter } from "../services/unreadMessagesCounterService";
+import { messageCounters } from "../services/unreadMessagesCounterService";
 import { cleanupMessageObserver, observeUnreadMessages } from "../services/unreadMsgObserver";
 import { setSelectedUser } from "../services/usersService";
 import { createUnreadDivider } from "../utils/createMsgDivider";
@@ -35,8 +35,6 @@ export function renderUsersList(active: User[], inactive: User[]) {
         userSpan.classList.add('selected');
         setSelectedUser(user.login);
         setupMessageSending();
-
-        resetMessageCounter(user.login);
 
         const history = await getMessageHistory(user.login);
 
@@ -78,11 +76,9 @@ export function renderMessageHistory(messages: Message[]) {
     scrollToFirstUnread();
   }, 100);
 
-  ///////////////////////////////////////
   setTimeout(() => {
     observeUnreadMessages()
   }, 200);
-  ///////////////////////////////////////
 }
 
 function createCloseChatButton(): HTMLButtonElement | null {
@@ -106,9 +102,7 @@ function createCloseChatButton(): HTMLButtonElement | null {
     chatArea.innerHTML = '';
     btn.remove();
 
-    // 👇 Очищаем observer при закрытии чата
     cleanupMessageObserver();
-    //////////////////////////////////////////
   })
 
   headerArea.prepend(btn);
@@ -133,9 +127,7 @@ function createMessageElement(message: Message): HTMLDivElement {
 
   messageElement.classList.add('message', isSentMessage ? 'sent' : 'received');
 
-  // 👇 Добавляем ID сообщения для отслеживания
   messageElement.setAttribute('data-message-id', message.id);
-  ////////////////////////////////////////////
 
   if (isUnread) {
     messageElement.setAttribute('data-unread', 'true');

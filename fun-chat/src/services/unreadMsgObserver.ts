@@ -1,4 +1,4 @@
-import { getMessageReadStatus } from "./messagesService";
+import { getMessageReadStatus } from "../api/messages";
 import { decrementMessageCounter } from "./unreadMessagesCounterService";
 import { getSelectedUser } from "./usersService";
 

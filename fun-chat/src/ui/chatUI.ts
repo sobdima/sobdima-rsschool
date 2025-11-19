@@ -1,6 +1,7 @@
+import { getMessageHistory } from "../api/messages";
 import { createButton } from "../components/button";
 import { createSpan } from "../components/span";
-import { getMessageHistory, setupMessageSending } from "../services/messagesService";
+import { setupMessageSending } from "../services/messagesService";
 import { messageCounters } from "../services/unreadMessagesCounterService";
 import { cleanupMessageObserver, observeUnreadMessages } from "../services/unreadMsgObserver";
 import { setSelectedUser } from "../services/usersService";

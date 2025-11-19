@@ -1,6 +1,7 @@
+import { sendMessage } from "../api/messages";
 import { sendRequest } from "../api/ws";
 import { appendMessage } from "../ui/chatUI";
-import { MessageHistoryRequest, MessageHistoryResponse, MsgReadRequest, MsgReadResponse, MsgSendPayload, WSResponse } from "../utils/types";
+import { MsgSendPayload } from "../utils/types";
 import { getSelectedUser, selectedUser } from "./usersService";
 
 const processedMessages = new Set<string>();
@@ -63,55 +64,3 @@ export function setupMessageSending() {
     }
   });
 }
-
-export async function sendMessage(to: string, text: string): Promise<WSResponse<MsgSendPayload>> {
-  const from = localStorage.getItem('username') || '';
-  const payload = {
-    message: {
-      from,
-      to,
-      text,
-      datetime: Date.now(),
-    }
-  };
-  return sendRequest('MSG_SEND', payload);
-}
-
-export async function getMessageHistory(userLogin: string): Promise<WSResponse<MessageHistoryResponse>> {
-  const payload: MessageHistoryRequest = {
-    user: {
-      login: userLogin
-    }
-  }
-
-  return sendRequest('MSG_FROM_USER', payload);
-}
-
-export async function getMessageReadStatus(messageId: string): Promise<WSResponse<MsgReadResponse>> {
-  const payload: MsgReadRequest = {
-    message: {
-      id: messageId
-    }
-  };
-
-  return sendRequest('MSG_READ', payload);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-/* export async function markMessagesAsRead(messages: Message[], username: string) {
-
-  const unreadMessages = messages.filter(msg =>
-    msg.to === username && !msg.status.isReaded
-  );
-
-  const promises = unreadMessages.map(msg =>
-    getMessageReadStatus(msg.id)
-  );
-
-  try {
-    await Promise.all(promises);
-    console.log(`Отмечено как прочитано: ${unreadMessages.length} сообщений`);
-  } catch (error) {
-    console.error('Ошибка при отметке сообщений как прочитанных:', error);
-  }
-} */

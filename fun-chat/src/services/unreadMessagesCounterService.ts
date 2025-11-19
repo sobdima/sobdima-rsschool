@@ -1,7 +1,7 @@
+import { getMessageHistory, getMessageReadStatus } from "../api/messages";
 import { appendMessage } from "../ui/chatUI";
 import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message } from "../utils/types";
-import { getMessageHistory, getMessageReadStatus } from "./messagesService";
 import { cleanupMessageObserver, observeUnreadMessages } from "./unreadMsgObserver";
 import { getSelectedUser } from "./usersService";
 
@@ -50,8 +50,6 @@ export async function handleIncomingMessage(message: Message) {
   }
 }
 
-
-
 function incrementMessageCounter(username: string) {
   if (!messageCounters[username]) {
     messageCounters[username] = 0;
@@ -86,16 +84,6 @@ export function updateUserMessagesCounter(username: string, count: number) {
     }
   });
 }
-
-/* export function resetMessageCounter(username: string) {
-  const userElements = document.querySelectorAll('.user-name');
-
-  if (messageCounters[username]) {
-    messageCounters[username] = 0;
-    localStorage.setItem(MESSAGE_COUNTERS_KEY, JSON.stringify(messageCounters));
-    updateUserMessagesCounter(username, 0);
-  }
-} */
 
 export async function restoreMessageCounters(usernames: string[]) {
   try {

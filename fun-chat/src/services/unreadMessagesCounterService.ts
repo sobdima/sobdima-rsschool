@@ -1,6 +1,8 @@
 import { appendMessage } from "../ui/chatUI";
+import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message } from "../utils/types";
-import { getMessageHistory } from "./messagesService";
+import { getMessageHistory, getMessageReadStatus } from "./messagesService";
+import { cleanupMessageObserver, observeUnreadMessages } from "./unreadMsgObserver";
 import { getSelectedUser } from "./usersService";
 
 const MESSAGE_COUNTERS_KEY = 'messageCounters';
@@ -9,13 +11,46 @@ export const messageCounters: Record<string, number> = JSON.parse(
   localStorage.getItem(MESSAGE_COUNTERS_KEY) || '{}'
 );
 
-export function handleIncomingMessage(message: Message) {
-  if (getSelectedUser() === message.from) {
+export async function handleIncomingMessage(message: Message) {
+  const selected = getSelectedUser();
+  if (selected === message.from) {
     appendMessage(message);
+
+    cleanupMessageObserver();
+    observeUnreadMessages();
+
+    const chatArea = document.querySelector('.chat-window') as HTMLElement | null;
+    const messageElement = document.querySelector(`[data-message-id="${message.id}"]`) as HTMLElement | null;
+
+    if (!chatArea || !messageElement) return;
+
+    const containerRect = chatArea.getBoundingClientRect();
+    const elRect = messageElement.getBoundingClientRect();
+    const isVisible = elRect.top >= containerRect.top && elRect.bottom <= containerRect.bottom;
+
+    if (!isVisible) {
+      incrementMessageCounter(message.from);
+
+      if (!chatArea.querySelector('.unread-divider')) {
+        const divider = createUnreadDivider();
+        chatArea.insertBefore(divider, messageElement);
+      }
+    } else {
+      if (message.id) {
+        try {
+          await getMessageReadStatus(message.id);
+          messageElement.removeAttribute('data-unread');
+        } catch (err) {
+          console.error('Error marking message read on visibility:', err);
+        }
+      }
+    }
   } else {
     incrementMessageCounter(message.from);
   }
 }
+
+
 
 function incrementMessageCounter(username: string) {
   if (!messageCounters[username]) {

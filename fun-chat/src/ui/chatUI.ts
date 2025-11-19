@@ -8,9 +8,9 @@ import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message, User } from "../utils/types";
 
 const USERNAME_KEY = 'username';
-const username = localStorage.getItem(USERNAME_KEY);
 
 export function renderUsersList(active: User[], inactive: User[]) {
+  const username = localStorage.getItem(USERNAME_KEY);
   const usersList = document.querySelector('.users-list');
   if (!usersList) return;
 
@@ -54,6 +54,7 @@ export function renderUsersList(active: User[], inactive: User[]) {
 }
 
 export function renderMessageHistory(messages: Message[]) {
+  const username = localStorage.getItem(USERNAME_KEY);
   const chatArea = document.querySelector('.chat-window');
   if (!chatArea) return;
 

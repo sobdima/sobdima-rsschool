@@ -1,7 +1,7 @@
-import { getMessageHistory } from "../api/messages";
+import { getMessageDeleteStatus, getMessageHistory } from "../api/messages";
 import { createButton } from "../components/button";
 import { createSpan } from "../components/span";
-import { setupMessageSending } from "../services/messagesService";
+import { removeMessageById, setupMessageSending } from "../services/messagesService";
 import { messageCounters } from "../services/unreadMessagesCounterService";
 import { cleanupMessageObserver, observeUnreadMessages } from "../services/unreadMsgObserver";
 import { setSelectedUser } from "../services/usersService";
@@ -167,6 +167,25 @@ function createMessageElement(message: Message): HTMLDivElement {
       ${statusIcons.edited ? `<div class="message-status">${statusIcons.edited}</div>` : ''}
       `;
   }
+
+  messageElement.addEventListener('click', async (el) => {
+    //console.log('CLICK MSG', el.target);
+
+    try {
+      const response = await getMessageDeleteStatus(message.id);
+
+      if (response?.type === "MSG_DELETE") {
+        const deletedId = response.payload?.message?.id;
+        const isDeleted = response?.payload?.message?.status?.isDeleted;
+
+        if (deletedId && (isDeleted ?? true)) {
+          removeMessageById(deletedId);
+        }
+      }
+    } catch (error) {
+      console.log('Error deleting message', error)
+    }
+  })
 
   return messageElement;
 }

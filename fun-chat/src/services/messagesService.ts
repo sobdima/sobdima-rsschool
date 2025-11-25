@@ -64,3 +64,21 @@ export function setupMessageSending() {
     }
   });
 }
+
+export function removeMessageById(messageId: string) {
+  const elem = document.querySelector(`.message[data-message-id="${messageId}"]`) as HTMLElement;
+
+  if (elem) {
+    const h = elem.offsetHeight;
+    elem.style.height = h + 'px';
+    elem.style.boxSizing = 'border-box';
+    elem.getBoundingClientRect();
+    elem.classList.add('removing');
+
+    elem.addEventListener('transitionend', () => {
+      elem.remove();
+    }, { once: true });
+
+    //elem.remove();
+  }
+}

@@ -1,4 +1,4 @@
-import { MessageHistoryRequest, MessageHistoryResponse, MsgReadRequest, MsgReadResponse, MsgSendPayload, WSResponse } from "../utils/types";
+import { MessageHistoryRequest, MessageHistoryResponse, MsgDeleteRequest, MsgDeleteResponse, MsgReadRequest, MsgReadResponse, MsgSendPayload, WSResponse } from "../utils/types";
 import { sendRequest } from "./ws";
 
 export async function sendMessage(to: string, text: string): Promise<WSResponse<MsgSendPayload>> {
@@ -32,4 +32,18 @@ export async function getMessageReadStatus(messageId: string): Promise<WSRespons
   };
 
   return sendRequest('MSG_READ', payload);
+}
+
+
+
+////////////////////////////////////////////////////////
+
+export async function getMessageDeleteStatus(messageId: string): Promise<WSResponse<MsgDeleteResponse>> {
+  const payload: MsgDeleteRequest = {
+    message: {
+      id: messageId
+    }
+  };
+
+  return sendRequest('MSG_DELETE', payload);
 }

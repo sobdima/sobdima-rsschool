@@ -83,3 +83,43 @@
 [data-unread="true"] {
   scroll-margin-top: 40px;
 }
+
+
+/*============================*/
+/* Переходы для удаления сообщения */
+.message {
+  transition:
+    opacity .28s ease,
+    transform .28s ease,
+    height .28s ease,
+    margin .24s ease,
+    padding .24s ease;
+  will-change: opacity, transform, height;
+}
+
+/* Состояние удаления */
+.message.removing {
+  opacity: 0;
+  transform: scale(0.96) translateY(-4px);
+  height: 0 !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden;
+}
+
+/* Доп: можно подсветить перед исчезновением */
+/* .message.removing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(255,80,80,0.15), transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  animation: flashOut .25s forwards;
+}
+
+@keyframes flashOut {
+  0% { opacity: .6; }
+  100% { opacity: 0; }
+} */

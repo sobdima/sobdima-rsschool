@@ -111,3 +111,18 @@ export interface MsgReadResponse {
     }
   }
 }
+
+export interface MsgDeleteRequest {
+  message: {
+    id: string;
+  }
+}
+
+export interface MsgDeleteResponse {
+  message: {
+    id: string;
+    status: {
+      isDeleted: boolean;
+    }
+  }
+}

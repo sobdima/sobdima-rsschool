@@ -1,7 +1,8 @@
 import { handleRouting } from '../router/router';
+import { removeMessageById } from '../services/messagesService';
 import { handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
-import { MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
+import { MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
@@ -98,6 +99,16 @@ export function connect(url: string) {
           statusDiv.textContent = '✓✓';
         }
       })
+    }
+
+    if (message.type === "MSG_DELETE" && message.id === null) {
+      //console.log('ws.ts = сообщение удалено', message);
+      const payload = message.payload as MsgDeleteResponse;
+      const deletedId: string = payload?.message?.id;
+
+      if (deletedId) {
+        removeMessageById(deletedId);
+      } // else {console.warn('Error deleting message)'}
     }
 
     if (message.id && listeners[message.id]) {

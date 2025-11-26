@@ -1,5 +1,6 @@
 import { getMessageDeleteStatus, getMessageHistory } from "../api/messages";
 import { createButton } from "../components/button";
+import { createConfirmDialog } from "../components/confirmDialog";
 import { createSpan } from "../components/span";
 import { removeMessageById, setupMessageSending } from "../services/messagesService";
 import { messageCounters } from "../services/unreadMessagesCounterService";
@@ -145,8 +146,10 @@ function createMessageElement(message: Message): HTMLDivElement {
 
   if (isSentMessage) {
     messageElement.innerHTML = `
-    <div class="message-header">
+      <div class="message-header">
         <span class="time">${time}</span>
+        <span class="edit">✎</span>
+        <span class="delete">🗙</span>
       </div>
       <div class="message-content">
         <span class="text">${message.text}</span>
@@ -157,7 +160,7 @@ function createMessageElement(message: Message): HTMLDivElement {
       `;
   } else {
     messageElement.innerHTML = `
-    <div class="message-header">
+      <div class="message-header">
         <span class="time">${time}</span>
         <span class="author">${message.from}</span>
       </div>
@@ -168,9 +171,7 @@ function createMessageElement(message: Message): HTMLDivElement {
       `;
   }
 
-  messageElement.addEventListener('click', async (el) => {
-    //console.log('CLICK MSG', el.target);
-
+  /* messageElement.addEventListener('click', async (el) => {
     try {
       const response = await getMessageDeleteStatus(message.id);
 
@@ -185,7 +186,43 @@ function createMessageElement(message: Message): HTMLDivElement {
     } catch (error) {
       console.log('Error deleting message', error)
     }
-  })
+  }) */
+
+    const deleteIcon = messageElement.querySelector('.delete');
+
+    if (deleteIcon) {
+      deleteIcon.addEventListener('click', async (evt) => {
+        evt.stopPropagation();
+
+        const confirm = createConfirmDialog({
+          message: 'Delete message?',
+          yesText: 'Yes',
+          noText: 'No',
+        })
+
+        confirm.onYes(async () => {
+          try {
+            const response = await getMessageDeleteStatus(message.id);
+            if (response?.type === "MSG_DELETE") {
+              const deletedId = response.payload?.message?.id;
+              const isDeleted = response?.payload?.message?.status?.isDeleted;
+
+              if (deletedId && (isDeleted ?? true)) {
+                removeMessageById(deletedId);
+              }
+            }
+          } catch (error) {
+            console.log('Error deleting message', error)
+          }
+        });
+
+        confirm.onNo(() => {
+          //nothing
+        });
+
+        confirm.show();
+      });
+    }
 
   return messageElement;
 }

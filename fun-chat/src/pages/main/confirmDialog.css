@@ -1,0 +1,62 @@
+/* Simple confirm dialog */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity .2s ease;
+}
+.confirm-overlay.visible { opacity: 1; }
+
+.confirm-dialog {
+  background: #fff;
+  color: #222;
+  width: 280px;
+  max-width: 90vw;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  padding: 14px 16px;
+  transform: translateY(8px) scale(0.98);
+  transition: transform .2s ease;
+}
+.confirm-overlay.visible .confirm-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.confirm-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.confirm-message {
+  margin-bottom: 12px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.confirm-actions .confirm-yes {
+  background: #e5484d;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.confirm-actions .confirm-yes:hover { background: #cf3b40; }
+
+.confirm-actions .confirm-no {
+  background: #f1f1f4;
+  color: #222;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.confirm-actions .confirm-no:hover { background: #e7e7ea; }

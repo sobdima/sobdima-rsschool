@@ -78,7 +78,5 @@ export function removeMessageById(messageId: string) {
     elem.addEventListener('transitionend', () => {
       elem.remove();
     }, { once: true });
-
-    //elem.remove();
   }
 }

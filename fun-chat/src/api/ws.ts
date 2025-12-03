@@ -1,6 +1,6 @@
 import { handleRouting } from '../router/router';
 import { removeMessageById } from '../services/messagesService';
-import { handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
+import { decrementMessageCounter, handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
 import { MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
@@ -102,13 +102,18 @@ export function connect(url: string) {
     }
 
     if (message.type === "MSG_DELETE" && message.id === null) {
-      //console.log('ws.ts = сообщение удалено', message);
       const payload = message.payload as MsgDeleteResponse;
       const deletedId: string = payload?.message?.id;
 
       if (deletedId) {
         removeMessageById(deletedId);
-      } // else {console.warn('Error deleting message)'}
+
+        setTimeout(() => {
+        const userEls = Array.from(document.querySelectorAll('.user-name'));
+        const usernames = userEls.map(el => el.textContent?.trim()).filter((name): name is string => !!name);
+        restoreMessageCounters(usernames)
+      }, 350)
+      }
     }
 
     if (message.id && listeners[message.id]) {

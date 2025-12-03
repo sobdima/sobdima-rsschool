@@ -171,24 +171,7 @@ function createMessageElement(message: Message): HTMLDivElement {
       `;
   }
 
-  /* messageElement.addEventListener('click', async (el) => {
-    try {
-      const response = await getMessageDeleteStatus(message.id);
-
-      if (response?.type === "MSG_DELETE") {
-        const deletedId = response.payload?.message?.id;
-        const isDeleted = response?.payload?.message?.status?.isDeleted;
-
-        if (deletedId && (isDeleted ?? true)) {
-          removeMessageById(deletedId);
-        }
-      }
-    } catch (error) {
-      console.log('Error deleting message', error)
-    }
-  }) */
-
-    const deleteIcon = messageElement.querySelector('.delete');
+  const deleteIcon = messageElement.querySelector('.delete');
 
     if (deleteIcon) {
       deleteIcon.addEventListener('click', async (evt) => {

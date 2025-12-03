@@ -1,7 +1,6 @@
 import '../pages/main/confirmDialog.css';
 
 export type ConfirmOptions = {
-  title?: string;
   message?: string;
   yesText?: string;
   noText?: string;
@@ -17,7 +16,6 @@ export type ConfirmDialog = {
 
 export function createConfirmDialog(opts: ConfirmOptions = {}): ConfirmDialog {
   const {
-    title = 'Confirm',
     message = 'Delete message?',
     yesText = 'Yes',
     noText = 'No',
@@ -30,7 +28,6 @@ export function createConfirmDialog(opts: ConfirmOptions = {}): ConfirmDialog {
   dialog.className = 'confirm-dialog';
 
   dialog.innerHTML = `
-    <div class="confirm-title">${title}</div>
     <div class="confirm-message">${message}</div>
     <div class="confirm-actions">
       <button class="confirm-yes" type="button">${yesText}</button>
@@ -48,13 +45,19 @@ export function createConfirmDialog(opts: ConfirmOptions = {}): ConfirmDialog {
 
   const show = () => {
     document.body.appendChild(overlay);
+    document.addEventListener('keydown', handleEscape);
     getComputedStyle(overlay).opacity;
     overlay.classList.add('visible');
   };
 
   const hide = () => {
+    document.removeEventListener('keydown', handleEscape);
     overlay.classList.remove('visible');
     overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+  };
+
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') hide();
   };
 
   yesBtn.addEventListener('click', () => {

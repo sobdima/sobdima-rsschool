@@ -126,3 +126,20 @@ export interface MsgDeleteResponse {
     }
   }
 }
+
+export interface MsgEditPayload {
+  message: {
+    id: string;
+    text: string;
+  }
+}
+
+export interface MsgEditResponse {
+  message: {
+    id: string;
+    text: string;
+    status: {
+      isEdited: boolean;
+    }
+  }
+}

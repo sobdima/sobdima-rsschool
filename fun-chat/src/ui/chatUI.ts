@@ -2,7 +2,7 @@ import { getMessageDeleteStatus, getMessageHistory } from "../api/messages";
 import { createButton } from "../components/button";
 import { createConfirmDialog } from "../components/confirmDialog";
 import { createSpan } from "../components/span";
-import { removeMessageById, setupMessageSending } from "../services/messagesService";
+import { handleEditMessage, removeMessageById, setupMessageSending } from "../services/messagesService";
 import { messageCounters } from "../services/unreadMessagesCounterService";
 import { cleanupMessageObserver, observeUnreadMessages } from "../services/unreadMsgObserver";
 import { setSelectedUser } from "../services/usersService";
@@ -171,41 +171,57 @@ function createMessageElement(message: Message): HTMLDivElement {
       `;
   }
 
+  const editIcon = messageElement.querySelector('.edit');
   const deleteIcon = messageElement.querySelector('.delete');
+  const currentMessageText = messageElement.querySelector('.text');
 
-    if (deleteIcon) {
-      deleteIcon.addEventListener('click', async (evt) => {
-        evt.stopPropagation();
 
-        const confirm = createConfirmDialog({
-          message: 'Delete message?',
-          yesText: 'Yes',
-          noText: 'No',
-        })
 
-        confirm.onYes(async () => {
-          try {
-            const response = await getMessageDeleteStatus(message.id);
-            if (response?.type === "MSG_DELETE") {
-              const deletedId = response.payload?.message?.id;
-              const isDeleted = response?.payload?.message?.status?.isDeleted;
+  if (editIcon) {
+    editIcon.addEventListener('click', (evt) => {
+      evt.stopPropagation();
 
-              if (deletedId && (isDeleted ?? true)) {
-                removeMessageById(deletedId);
-              }
+      if (currentMessageText && currentMessageText.textContent) {
+        handleEditMessage(message.id, currentMessageText.textContent)
+      } else {
+        handleEditMessage(message.id, message.text);
+      }
+    });
+  }
+
+  if (deleteIcon) {
+    deleteIcon.addEventListener('click', async (evt) => {
+      evt.stopPropagation();
+
+      const confirm = createConfirmDialog({
+        message: 'Delete message?',
+        yesText: 'Yes',
+        noText: 'No',
+      })
+
+      confirm.onYes(async () => {
+        try {
+          const response = await getMessageDeleteStatus(message.id);
+          if (response?.type === "MSG_DELETE") {
+            const deletedId = response.payload?.message?.id;
+            const isDeleted = response?.payload?.message?.status?.isDeleted;
+
+            if (deletedId && (isDeleted ?? true)) {
+              removeMessageById(deletedId);
             }
-          } catch (error) {
-            console.log('Error deleting message', error)
           }
-        });
-
-        confirm.onNo(() => {
-          //nothing
-        });
-
-        confirm.show();
+        } catch (error) {
+          console.log('Error deleting message', error)
+        }
       });
-    }
+
+      confirm.onNo(() => {
+        //nothing
+      });
+
+      confirm.show();
+    });
+  }
 
   return messageElement;
 }

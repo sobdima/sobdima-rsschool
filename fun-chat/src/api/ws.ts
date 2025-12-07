@@ -1,5 +1,5 @@
 import { handleRouting } from '../router/router';
-import { removeMessageById } from '../services/messagesService';
+import { removeMessageById, updateMessageInDOM } from '../services/messagesService';
 import { decrementMessageCounter, handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
 import { MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
@@ -85,7 +85,13 @@ export function connect(url: string) {
       messageElement.forEach((el) => {
         const statusDiv = el.querySelector('.message-status');
         if (statusDiv) {
-          statusDiv.textContent = '✓';
+          const currentStatus = statusDiv.textContent || '';
+
+          if (!currentStatus || currentStatus.trim() === '') {
+            statusDiv.textContent = '✓';
+          } else if (currentStatus.includes('(edited)')) {
+            statusDiv.textContent = '✓ (edited)';
+          }
         }
       })
     }
@@ -96,7 +102,13 @@ export function connect(url: string) {
       messageElement.forEach((el) => {
         const statusDiv = el.querySelector('.message-status');
         if (statusDiv) {
-          statusDiv.textContent = '✓✓';
+          const currentStatus = statusDiv.textContent || '';
+
+          if (currentStatus.includes('(edited)')) {
+            statusDiv.textContent = '✓✓ (edited)';
+          } else {
+            statusDiv.textContent = '✓✓';
+          }
         }
       })
     }
@@ -113,6 +125,33 @@ export function connect(url: string) {
         const usernames = userEls.map(el => el.textContent?.trim()).filter((name): name is string => !!name);
         restoreMessageCounters(usernames)
       }, 350)
+      }
+    }
+
+    if (message.type === "MSG_EDIT" && message.id === null) {
+      const payload = message.payload as {message?: { id: string; text: string; status: { isEdited: boolean; } } };
+      if (payload.message?.id) {
+        updateMessageInDOM(payload.message?.id, payload.message?.text, payload.message?.status.isEdited);
+
+        const messageElement = document.querySelector(`[data-message-id="${payload.message.id}"]`);
+        if (messageElement) {
+          const statusDiv = messageElement.querySelector('.message-status');
+          if (statusDiv) {
+            const currentStatus = statusDiv.textContent || '';
+            if (currentStatus.includes('✓✓')) {
+              statusDiv.textContent = '✓✓ (edited)';
+            } else if (currentStatus.includes('✓')) {
+              statusDiv.textContent = '✓ (edited)';
+            } else {
+              statusDiv.textContent = '(edited)';
+            }
+          } else {
+            const editedDiv = document.createElement('div');
+            editedDiv.className = 'message-status';
+            editedDiv.textContent = '(edited)';
+            messageElement.appendChild(editedDiv);
+          }
+        }
       }
     }
 

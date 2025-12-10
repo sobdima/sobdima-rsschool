@@ -1,8 +1,9 @@
 import { handleRouting } from '../router/router';
 import { removeMessageById, updateMessageInDOM } from '../services/messagesService';
-import { decrementMessageCounter, handleIncomingMessage, restoreMessageCounters, updateUserMessagesCounter } from '../services/unreadMessagesCounterService';
+import { handleIncomingMessage, restoreMessageCounters } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
-import { MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
+import { showAlreadyLoggedInModal } from '../utils/modal';
+import { ErrorPayload, MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
@@ -14,16 +15,22 @@ export function connect(url: string) {
   websocket = new WebSocket(url);
 
   websocket.onopen = async () => {
+
     const username = localStorage.getItem('username');
     const password = localStorage.getItem('password');
 
     if (username && password) {
       try {
         const response = await loginUser(username, password);
+        const errorText = (response as WSResponse<ErrorPayload>)?.payload?.error;
+
         if (response.type === 'USER_LOGIN') {
           window.location.hash = '#chat';
           handleRouting();
           await updateExternalUsersList();
+        } else if (response.type === 'ERROR' && errorText === 'a user with this login is already authorized') {
+          console.warn('User already authorized in another tab');
+          showAlreadyLoggedInModal();
         } else {
           localStorage.clear();
           window.location.hash = '#login';

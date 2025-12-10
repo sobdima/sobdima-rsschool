@@ -65,6 +65,16 @@ export function setupMessageSending() {
       console.error('Не удалось отправить сообщение:', err);
     }
   });
+
+  input.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+
+      if (!input.dataset.editHandler) {
+        sendButton.click();
+      }
+    }
+  });
 }
 
 export function removeMessageById(messageId: string) {

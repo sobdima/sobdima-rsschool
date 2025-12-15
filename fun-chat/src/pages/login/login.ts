@@ -100,8 +100,6 @@ async function handleLoginSubmit(
 
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
-  localStorage.setItem("username", username);
-  localStorage.setItem("password", password);
 
   errorMessage.textContent = "";
   errorMessage.style.display = "none";
@@ -112,9 +110,9 @@ async function handleLoginSubmit(
     if (response.type === 'USER_LOGIN') {
       window.location.hash = "#chat";
       handleRouting();
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
     }
-
-
   } catch (error) {
     console.log('Login error: ', error);
 

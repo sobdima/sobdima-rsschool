@@ -1,6 +1,6 @@
 import { getMessageDeleteStatus, getMessageHistory } from "../api/messages";
 import { createButton } from "../components/button";
-import { createConfirmDialog } from "../components/confirmDialog";
+import { createConfirmDialog } from "../utils/modal";
 import { createSpan } from "../components/span";
 import { handleEditMessage, removeMessageById, setupMessageSending } from "../services/messagesService";
 import { messageCounters } from "../services/unreadMessagesCounterService";

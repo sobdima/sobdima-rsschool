@@ -2,19 +2,27 @@ import { handleRouting } from '../router/router';
 import { removeMessageById, updateMessageInDOM } from '../services/messagesService';
 import { handleIncomingMessage, restoreMessageCounters } from '../services/unreadMessagesCounterService';
 import { updateExternalUsersList } from '../services/usersService';
-import { showAlreadyLoggedInModal } from '../utils/modal';
+import { closeReconnectModal, showAlreadyLoggedInModal, showReconnectModal } from '../utils/modal';
 import { ErrorPayload, MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
 let websocket: WebSocket | null = null;
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
 const processedMessages = new Set<string>();
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 5;
+const RECONNECT_DELAY = 3000;
+let reconnectTimeout: NodeJS.Timeout | null = null;
+let wsUrl: string = '';
 
 // Create WebSocket-connection
 export function connect(url: string) {
+  wsUrl = url;
   websocket = new WebSocket(url);
 
   websocket.onopen = async () => {
+    reconnectAttempts = 0;
+    closeReconnectModal();
 
     const username = localStorage.getItem('username');
     const password = localStorage.getItem('password');
@@ -49,7 +57,7 @@ export function connect(url: string) {
     const message: WSResponse = JSON.parse(event.data);
 
     ///////////////////////////////////////////
-    //console.log('message от сервера', message);
+    console.log('message от сервера', message);
     ///////////////////////////////////////////
 
     if (message.type === "USER_LOGIN") {
@@ -170,6 +178,7 @@ export function connect(url: string) {
 
   websocket.onclose = () => {
     console.warn('Dima closed [WebSocket]');
+    attemptReconnect();
   };
 
   websocket.onerror = (err) => {
@@ -205,4 +214,29 @@ export function sendRequest<
     };
     websocket.send(JSON.stringify(request));
   });
+}
+
+
+function attemptReconnect() {
+  if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+    console.error('Max reconnection attempts reached');
+    showReconnectModal(MAX_RECONNECT_ATTEMPTS, MAX_RECONNECT_ATTEMPTS, 0, true);
+    return;
+  }
+
+  reconnectAttempts++;
+  const delay = RECONNECT_DELAY * reconnectAttempts;
+
+  console.log(`Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) in ${delay}ms...`);
+
+  closeReconnectModal();
+  showReconnectModal(reconnectAttempts, MAX_RECONNECT_ATTEMPTS, delay, false);
+
+  if (reconnectTimeout) {
+    clearTimeout(reconnectTimeout);
+  }
+
+  reconnectTimeout = setTimeout(() => {
+    connect(wsUrl);
+  }, delay);
 }

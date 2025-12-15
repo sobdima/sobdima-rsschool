@@ -7,6 +7,7 @@ import { handleRouting } from '../../router/router';
 import { logoutUser } from '../../api/auth';
 import './main.css';
 import './chat.css';
+import { selectedUserPlaceholder } from '../../utils/placeholders';
 
 export function createChatPage(): HTMLElement {
   const container = createDiv('chat-container');
@@ -53,10 +54,7 @@ export function createChatPage(): HTMLElement {
 
   // Message Window
   const chatWindow = createDiv('chat-window');
-  const chatPlaceholder = document.createElement('div');
-  chatPlaceholder.className = 'chat-placeholder';
-  chatPlaceholder.textContent = 'Select a user to start chatting';
-  chatWindow.appendChild(chatPlaceholder);
+  chatWindow.appendChild(selectedUserPlaceholder('Select a user to start chatting'));
 
   // Input message area
   const messageInputArea = createDiv('message-input-area');

@@ -107,9 +107,12 @@
   justify-content: flex-start;
 }
 
-.chat-placeholder {
+.main-placeholder {
   color: #6c757d;
   font-style: italic;
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .message-input-area {

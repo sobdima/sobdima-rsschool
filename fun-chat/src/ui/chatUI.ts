@@ -8,6 +8,7 @@ import { cleanupMessageObserver, observeUnreadMessages } from "../services/unrea
 import { setSelectedUser } from "../services/usersService";
 import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message, User } from "../utils/types";
+import { selectedUserPlaceholder } from "../utils/placeholders";
 
 const USERNAME_KEY = 'username';
 
@@ -40,9 +41,15 @@ export function renderUsersList(active: User[], inactive: User[]) {
 
         const history = await getMessageHistory(user.login);
 
-        if (history.payload.messages) {
+        if (history.payload.messages && history.payload.messages.length > 0) {
           renderMessageHistory(history.payload.messages);
-        };
+        } else {
+          const chatArea = document.querySelector('.chat-window');
+          if (chatArea) {
+            chatArea.innerHTML = '';
+            chatArea.append(selectedUserPlaceholder(`start messaging with ${user.login}`));
+          }
+        }
 
         createCloseChatButton();
       })
@@ -103,6 +110,7 @@ function createCloseChatButton(): HTMLButtonElement | null {
     setSelectedUser(null);
 
     chatArea.innerHTML = '';
+    chatArea.appendChild(selectedUserPlaceholder('Select a user to start chatting'))
     btn.remove();
 
     cleanupMessageObserver();
@@ -116,6 +124,11 @@ function createCloseChatButton(): HTMLButtonElement | null {
 export function appendMessage(message: Message) {
   const chatArea = document.querySelector('.chat-window');
   if(!chatArea) return;
+
+  const placeholder = document.querySelector('.main-placeholder');
+  if (placeholder) {
+    placeholder.remove();
+  }
 
   chatArea.appendChild(createMessageElement(message));
 }

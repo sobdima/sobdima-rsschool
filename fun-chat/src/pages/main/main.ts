@@ -8,6 +8,7 @@ import { logoutUser } from '../../api/auth';
 import './main.css';
 import './chat.css';
 import { selectedUserPlaceholder } from '../../utils/placeholders';
+import { initUserSearch } from '../../services/usersService';
 
 export function createChatPage(): HTMLElement {
   const container = createDiv('chat-container');
@@ -51,6 +52,8 @@ export function createChatPage(): HTMLElement {
   });
 
   leftSection.append(searchInput, usersList);
+
+  initUserSearch(searchInput);
 
   // Message Window
   const chatWindow = createDiv('chat-window');

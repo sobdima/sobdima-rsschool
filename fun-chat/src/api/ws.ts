@@ -57,7 +57,7 @@ export function connect(url: string) {
     const message: WSResponse = JSON.parse(event.data);
 
     ///////////////////////////////////////////
-    console.log('message от сервера', message);
+    //console.log('message от сервера', message);
     ///////////////////////////////////////////
 
     if (message.type === "USER_LOGIN") {

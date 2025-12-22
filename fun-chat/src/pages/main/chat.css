@@ -61,7 +61,7 @@
   letter-spacing: 1px;
 }
 
-.user-name.has-messages::after {
+/* .user-name.has-messages::after {
   content: attr(data-message-count);
   background-color: red;
   color: white;
@@ -69,6 +69,36 @@
   padding: 2px 6px;
   margin-left: 5px;
   font-size: 12px;
+} */
+.user-container {
+  display: flex;
+  align-items: anchor-center;
+  gap: 10px;
+}
+.user-msg-count:last-child {
+ margin-left: auto;
+}
+.user-msg-count.has-messages::after {
+  content: attr(data-message-count);
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+.user-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* делает круг */
+  background-color: #ccc; /* цвет по умолчанию */
+}
+.user-status.offline {
+  background-color: #FF5555; /* красный для offline */
+}
+.user-status.online {
+  background-color: #73AF6F; /* зелёный для online */
 }
 
 .unread-divider {

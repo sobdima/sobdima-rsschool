@@ -70,16 +70,19 @@ export function decrementMessageCounter(username: string) {
 }
 
 export function updateUserMessagesCounter(username: string, count: number) {
-  const userElements = document.querySelectorAll('.user-name');
+  const userContainers = document.querySelectorAll('.user-container');
 
-  userElements.forEach((el) => {
-    if (el.textContent?.trim() === username) {
+  userContainers.forEach((container) => {
+    const nameEl = container.querySelector('.user-name');
+    const msgEl = container.querySelector('.user-msg-count') as HTMLElement | null;
+
+    if (nameEl?.textContent?.trim() === username && msgEl) {
       if (count && count > 0) {
-        el.setAttribute('data-message-count', count.toString());
-        el.classList.add('has-messages');
+        msgEl.setAttribute('data-message-count', count.toString());
+        msgEl.classList.add('has-messages');
       } else {
-        el.removeAttribute('data-message-count');
-        el.classList.remove('has-messages');
+        msgEl.removeAttribute('data-message-count');
+        msgEl.classList.remove('has-messages');
       }
     }
   });

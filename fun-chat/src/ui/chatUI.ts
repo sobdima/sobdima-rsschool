@@ -9,6 +9,7 @@ import { setSelectedUser } from "../services/usersService";
 import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message, User } from "../utils/types";
 import { selectedUserPlaceholder } from "../utils/placeholders";
+import { createDiv } from "../components/div";
 
 const USERNAME_KEY = 'username';
 
@@ -23,15 +24,18 @@ export function renderUsersList(active: User[], inactive: User[]) {
     users.forEach((user) => {
       if (user.login === username) return;
 
-      const userSpan = createSpan(`user-name ${isOnline ? 'online' : 'offline'}`, user.login);
+      const userDiv = createDiv('user-container');
+      const statusSpan = createSpan(`user-status ${isOnline ? 'online' : 'offline'}`, '');
+      const userSpan = createSpan(`user-name`, user.login);
+      const msgSpan = createSpan('user-msg-count', '');
 
       const messageCount = messageCounters[user.login] || 0;
       if (messageCount > 0) {
-        userSpan.setAttribute('data-message-count', messageCount.toString());
-        userSpan.classList.add('has-messages');
+        msgSpan.setAttribute('data-message-count', messageCount.toString());
+        msgSpan.classList.add('has-messages');
       }
 
-      userSpan.addEventListener('click', async () => {
+      userDiv.addEventListener('click', async () => {
         usersList.querySelectorAll('.user-name.selected').forEach(elem => {
           elem.classList.remove('selected')
         });
@@ -54,7 +58,10 @@ export function renderUsersList(active: User[], inactive: User[]) {
         createCloseChatButton();
       })
 
-      usersList.append(userSpan);
+      usersList.append(userDiv);
+      userDiv.append(statusSpan);
+      userDiv.append(userSpan);
+      userDiv.append(msgSpan);
     })
   }
 

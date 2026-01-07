@@ -1,0 +1,40 @@
+@use '../../base/variables.scss' as vars;
+
+.chat-footer {
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-top: 1px solid vars.$border;
+  background-color: vars.$bg-primary;
+}
+
+.chat-footer a {
+  font-size: 1.5rem;
+  color: vars.$text;
+  text-decoration: none;
+
+  &:hover {
+    color: vars.$primary;
+  }
+}
+
+.footer-year {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .chat-footer {
+    height: 56px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-footer {
+    height: 50px;
+    padding: 0 8px;
+  }
+}

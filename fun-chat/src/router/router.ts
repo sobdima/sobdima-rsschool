@@ -12,7 +12,7 @@ export function handleRouting() {
   const hash = window.location.hash;
   const authenticated = isAuthenticated();
 
-  // Обработка первичного захода и пустого хэша
+  //Handling the initial enter and empty hash
   if (!hash || hash === '') {
     if (authenticated) {
       window.location.hash = '#chat';
@@ -23,26 +23,26 @@ export function handleRouting() {
     }
   }
 
-  // Защита страницы логина от авторизованных пользователей
+  //Protecting the '/login' page from authorized users
   if (hash === '#login' && authenticated) {
     window.location.hash = '#chat';
     return;
   }
 
-  // Защита страницы чата от неавторизованных пользователей
+  //Protecting '/chat' page from unauthorized users
   if (hash === '#chat' && !authenticated) {
     window.location.hash = '#login';
     return;
   }
 
-  // Поиск и рендер соответствующего маршрута
+  //Search and render the corresponding route
   const route = routes.find((r) => r.path === hash);
 
   if (route) {
     const component = route.component();
     render(component);
   } else {
-    // Если маршрут не найден, перенаправляем в зависимости от статуса аутентификации
+    //If the route is not found
     if (authenticated) {
       window.location.hash = '#chat';
     } else {
@@ -52,6 +52,10 @@ export function handleRouting() {
 }
 
 export function initRouter() {
-  window.addEventListener('hashchange', handleRouting);
-  window.addEventListener('load', handleRouting);
+  const handleHashChange = () => {
+    handleRouting();
+  };
+
+  window.addEventListener('hashchange', handleHashChange);
+  window.addEventListener('load', handleHashChange);
 }

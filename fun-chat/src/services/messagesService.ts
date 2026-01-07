@@ -1,7 +1,7 @@
 import { editMessage, sendMessage } from "../api/messages";
-import { sendRequest } from "../api/ws";
 import { createButton } from "../components/button";
 import { appendMessage } from "../ui/chatUI";
+import { CharCounter } from "../utils/charCounter";
 import { MsgSendPayload } from "../utils/types";
 import { getSelectedUser, selectedUser } from "./usersService";
 
@@ -28,6 +28,7 @@ export function setupMessageSending() {
   if (!sendButton || !input || !chatArea) return;
 
   updateSendControls();
+  CharCounter.open();
 
   sendButton.addEventListener('click', async () => {
     const to = getSelectedUser();
@@ -61,6 +62,7 @@ export function setupMessageSending() {
       }
 
       input.value = '';
+      CharCounter.reset();
     } catch (err) {
       console.error('Не удалось отправить сообщение:', err);
     }
@@ -178,6 +180,7 @@ function cancelEdit() {
   }
 
   currentEditingMessageId = null;
+  CharCounter.exitEditMode();
 }
 
 export function updateMessageInDOM(messageId: string, newText: string, isEdited: boolean) {

@@ -17,9 +17,24 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name][hash][ext]'
+        }
+      }
     ],
   },
   resolve: {
@@ -28,7 +43,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-    }),
+      favicon: './src/assets/icons8-chat-96.png',
+    })
   ],
 
 };

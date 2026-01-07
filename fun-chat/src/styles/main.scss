@@ -1,0 +1,28 @@
+@use './base/reset.scss';
+@use '../styles/layout/about-page/about.scss';
+@use '../styles/layout/login-page/login.scss';
+@use '../styles/layout/main-page/chat-container.scss';
+@use '../styles/layout/main-page/chat-header.scss';
+@use '../styles/layout/main-page/chat-main.scss';
+@use '../styles/layout/main-page/chat-window.scss';
+@use '../styles/layout/main-page/chat-footer.scss';
+@use '../styles/components/button.scss';
+@use './utils/reconnection-modal.scss';
+@use './utils/loggedIn-modal.scss';
+@use './utils/confirm-modal.scss';
+@use './base/variables' as vars;
+
+body, html {
+  height: 100%;
+  font-family: sans-serif;
+  font-size: 10px;
+  color: vars.$text;
+  background-color: vars.$background;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

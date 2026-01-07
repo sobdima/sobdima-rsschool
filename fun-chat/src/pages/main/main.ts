@@ -5,8 +5,6 @@ import { createSpan } from '../../components/span';
 import { ErrorPayload } from '../../utils/types';
 import { handleRouting } from '../../router/router';
 import { logoutUser } from '../../api/auth';
-import './main.css';
-import './chat.css';
 import { selectedUserPlaceholder } from '../../utils/placeholders';
 import { initUserSearch } from '../../services/usersService';
 
@@ -68,6 +66,9 @@ export function createChatPage(): HTMLElement {
     placeholder: 'Type your message...'
   });
   messageInput.disabled = true;
+  messageInput.maxLength = 200;
+
+  const charCounter = createSpan('char-counter', '0/200');
 
   const sendButton = createButton({
     text: 'Send',
@@ -76,7 +77,7 @@ export function createChatPage(): HTMLElement {
   });
   sendButton.disabled = true;
 
-  messageInputArea.append(messageInput, sendButton);
+  messageInputArea.append(messageInput, sendButton, charCounter);
   rightSection.append(chatWindow, messageInputArea);
 
   main.append(leftSection, rightSection);
@@ -129,3 +130,4 @@ async function handleLogOut() {
     console.error(error);
   }
 }
+

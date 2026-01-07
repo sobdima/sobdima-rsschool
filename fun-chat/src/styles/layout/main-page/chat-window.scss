@@ -1,0 +1,123 @@
+@use '../../base/variables.scss' as vars;
+
+.unread-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  color: vars.$text-status;
+  font-size: 1.2rem;
+  width: calc(100% + 40px);
+  padding: 4px 0;
+  border-top: 1px solid vars.$border-dark;
+  border-bottom: 1px solid vars.$border-dark;
+}
+
+[data-unread="true"] {
+  scroll-margin-top: 40px;
+}
+
+.message {
+  max-width: 60%;
+  border-radius: 14px;
+  border: 1px solid vars.$border;
+  background: vars.$bg-message;
+  box-shadow: 3px 4px 4px rgba(60, 60, 60, 0.05);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message {
+  transition:
+    opacity .28s ease,
+    transform .28s ease,
+    height .28s ease,
+    margin .24s ease,
+    padding .24s ease;
+}
+
+.message.removing {
+  will-change: opacity, transform, height;
+  opacity: 0;
+  transform: scale(0.96) translateY(-4px);
+  height: 0 !important;
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden;
+}
+
+.message.received {
+  align-self: flex-start;
+}
+
+.message.sent {
+  align-self: flex-end;
+  background: vars.$bg-message-sent;
+}
+
+.message-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 1.2rem;
+  color: vars.$text-status;
+  .edit {
+    &:hover{
+      cursor: pointer;
+      color: vars.$primary;
+    }
+  }
+
+  .edit-icon {
+    &:hover {
+      fill: vars.$primary;
+    }
+  }
+
+  .delete {
+    &:hover{
+      cursor: pointer;
+      color: vars.$text-error;
+    }
+  }
+}
+
+.message-content {
+  word-break: break-word;
+}
+
+.message-content .text {
+  font-size: 1.5rem;
+  color: vars.$text;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.message-status {
+  text-align: right;
+  color: vars.$text-status;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .unread-divider {
+    font-size: 1.2rem;
+  }
+
+  .message {
+    padding: 12px 14px;
+  }
+
+  .message-header {
+    font-size: 1rem;
+  }
+
+  .message-content .text {
+    font-size: 1.2rem;
+  }
+}

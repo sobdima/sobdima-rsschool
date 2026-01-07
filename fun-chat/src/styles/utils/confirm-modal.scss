@@ -1,0 +1,48 @@
+@use '../base/variables.scss' as vars;
+@use '../components/overlay.scss' as overlay;
+
+.confirm-overlay {
+  @include overlay.overlay;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.confirm-overlay.visible { opacity: 1; }
+
+.confirm-dialog {
+  background: vars.$bg-white;
+  font-size: 1.5rem;
+  color: vars.$text;
+  width: 280px;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  padding: 14px 16px;
+  transform: translateY(8px) scale(0.98);
+  transition: transform .2s ease;
+}
+.confirm-overlay.visible .confirm-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.confirm-message {
+  margin-bottom: 20px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.confirm-actions .confirm-yes {
+  background: vars.$background;
+}
+.confirm-actions .confirm-yes:hover { background: vars.$bg-primary; }
+
+.confirm-actions .confirm-no:hover { background: vars.$bg-primary; }
+
+@media (max-width: 768px) {
+  .confirm-message {
+    font-size: 1.2rem;
+  }
+}

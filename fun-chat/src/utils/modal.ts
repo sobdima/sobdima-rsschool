@@ -1,5 +1,4 @@
 import { createDiv } from "../components/div";
-import './utils.css';
 
 export type ConfirmOptions = {
   message?: string;
@@ -88,11 +87,12 @@ export function createConfirmDialog(opts: ConfirmOptions = {}): ConfirmDialog {
   }
 }
 
-export function showAlreadyLoggedInModal(): void {
+export function showAlreadyLoggedInModal(text: string): void {
   const overlay = createDiv('already-logged-overlay');
   const modal = createDiv('already-logged-dialog');
 
-  modal.innerText = 'You are already logged in another tab.';
+  //modal.innerText = 'You are already logged in another tab.';
+  modal.innerText = text;
 
   overlay.appendChild(modal);
   document.body.appendChild(overlay);

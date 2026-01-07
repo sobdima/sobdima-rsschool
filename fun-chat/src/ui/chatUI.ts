@@ -10,6 +10,7 @@ import { createUnreadDivider } from "../utils/createMsgDivider";
 import { Message, User } from "../utils/types";
 import { selectedUserPlaceholder } from "../utils/placeholders";
 import { createDiv } from "../components/div";
+import { CharCounter } from "../utils/charCounter";
 
 const USERNAME_KEY = 'username';
 
@@ -117,7 +118,8 @@ function createCloseChatButton(): HTMLButtonElement | null {
     setSelectedUser(null);
 
     chatArea.innerHTML = '';
-    chatArea.appendChild(selectedUserPlaceholder('Select a user to start chatting'))
+    chatArea.appendChild(selectedUserPlaceholder('Select a user to start chatting'));
+    CharCounter.close();
     btn.remove();
 
     cleanupMessageObserver();
@@ -156,7 +158,11 @@ function createMessageElement(message: Message): HTMLDivElement {
     messageElement.setAttribute('data-unread', 'true');
   }
 
-  const time = new Date(message.datetime).toLocaleTimeString();
+  const time = new Date(message.datetime).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
 
   const statusIcons = {
       delivered: message.status.isDelivered ? '✓' : '',
@@ -168,8 +174,14 @@ function createMessageElement(message: Message): HTMLDivElement {
     messageElement.innerHTML = `
       <div class="message-header">
         <span class="time">${time}</span>
-        <span class="edit">✎</span>
-        <span class="delete">🗙</span>
+        <span class="edit">
+          <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#7a7a7a" version="1.1" id="Capa_1" width="10px" height="10px" viewBox="0 0 528.899 528.899" xml:space="preserve">
+            <g>
+	            <path d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981   c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611   C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069   L27.473,390.597L0.3,512.69z"/>
+            </g>
+          </svg>
+        </span>
+        <span class="delete">X</span>
       </div>
       <div class="message-content">
         <span class="text">${message.text}</span>
@@ -202,9 +214,11 @@ function createMessageElement(message: Message): HTMLDivElement {
       evt.stopPropagation();
 
       if (currentMessageText && currentMessageText.textContent) {
-        handleEditMessage(message.id, currentMessageText.textContent)
+        handleEditMessage(message.id, currentMessageText.textContent);
+        CharCounter.editMode(currentMessageText.textContent);
       } else {
         handleEditMessage(message.id, message.text);
+        CharCounter.editMode(message.text);
       }
     });
   }

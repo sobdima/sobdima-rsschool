@@ -3,7 +3,6 @@ import { createButton } from '../../components/button';
 import { createDiv } from '../../components/div';
 import { loginUser } from '../../api/auth';
 import { validateLoginForm } from '../../utils/validations';
-import './login.css';
 import { handleRouting } from '../../router/router';
 
 export function createLoginForm(): HTMLElement {

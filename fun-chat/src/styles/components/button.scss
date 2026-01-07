@@ -1,0 +1,24 @@
+@use '../base/variables.scss' as vars;
+
+button {
+  font-size: 1.5rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid vars.$border;
+  background: vars.$bg-white;
+  color: vars.$text;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  button {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  button {
+    padding: 7px 12px;
+  }
+}

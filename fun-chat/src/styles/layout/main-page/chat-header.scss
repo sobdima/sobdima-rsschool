@@ -1,0 +1,57 @@
+@use '../../base/variables.scss' as vars;
+
+.chat-header {
+  height: 60px;
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid vars.$border;
+  background-color: vars.$bg-primary;
+}
+
+.current-user {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: vars.$primary;
+}
+
+.chat-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: vars.$text;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 6px;
+
+  #close-chat-btn, #header-about-button, #header-logout-button {
+    &:hover {
+      border-color: vars.$border-dark;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-header {
+    height: 56px;
+    padding: 0 12px;
+  }
+
+  .current-user {
+    font-size: 1.2rem;
+  }
+
+  .chat-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-header {
+    height: 50px;
+    padding: 0 8px;
+  }
+}

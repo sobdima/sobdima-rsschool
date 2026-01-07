@@ -1,0 +1,43 @@
+@use '../base/variables.scss' as vars;
+@use '../components/overlay.scss' as overlay;
+
+.reconnect-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: vars.$bg-white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  max-width: 400px;
+  min-width: 200px;
+  text-align: center;
+}
+
+.reconnect-title {
+  font-size: 2rem;
+  margin: 0 0 20px 0;
+  color: vars.$text-error;
+}
+
+.reconnect-message {
+  margin: 0;
+  color: vars.$text-status;
+  font-size: 1.5rem;
+}
+
+.reconnect-overlay {
+  @include overlay.overlay;
+}
+
+@media (max-width: 768px) {
+  .reconnect-title {
+    font-size: 1.5rem;
+  }
+
+  .reconnect-message {
+    font-size: 1.2rem;
+  }
+}

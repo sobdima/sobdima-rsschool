@@ -1,6 +1,7 @@
 import { createLoginForm } from '../pages/login/login';
 import { Route } from '../utils/types';
 import { createChatPage } from '../pages/main/main';
+import { createAboutPage } from '../pages/about/about';
 
 
 export const routes: Route[] = [
@@ -10,11 +11,7 @@ export const routes: Route[] = [
   },
   {
     path: '#about',
-    component: () => {
-      const about = document.createElement('div');
-      about.innerHTML = '<h2>About</h2><p>This is a simple chat app.</p>';
-      return about;
-    },
+    component: createAboutPage,
   },
   {
     path: '#chat',

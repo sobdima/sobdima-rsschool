@@ -1,0 +1,53 @@
+/* 1. Box-sizing  */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Reset margins */
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure,
+blockquote,
+dl, dd {
+  margin: 0;
+}
+
+/* 3. Basic for body */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+}
+
+/* 4. Reset lists */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 5. Media */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Font inheritance */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Links */
+a {
+  text-decoration: none;
+  color: inherit;
+}

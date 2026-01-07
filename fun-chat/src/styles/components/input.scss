@@ -1,0 +1,8 @@
+@use '../base/variables.scss' as vars;
+
+@mixin input {
+  padding: 6px;
+  font-size: 1.5rem;
+  border: 1px solid vars.$border;
+  border-radius: 6px;
+}

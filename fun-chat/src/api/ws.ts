@@ -6,7 +6,7 @@ import { closeReconnectModal, showAlreadyLoggedInModal, showReconnectModal } fro
 import { ErrorPayload, MsgDeleteResponse, MsgSendPayload, WSRequest, WSResponse } from '../utils/types';
 import { loginUser } from './auth';
 
-let websocket: WebSocket | null = null;
+export let websocket: WebSocket | null = null;
 const listeners: { [id: string]: (response: WSResponse) => void } = {};
 const processedMessages = new Set<string>();
 let reconnectAttempts = 0;
@@ -36,9 +36,8 @@ export function connect(url: string) {
           window.location.hash = '#chat';
           handleRouting();
           await updateExternalUsersList();
-        } else if (response.type === 'ERROR' && errorText === 'a user with this login is already authorized') {
-          console.warn('User already authorized in another tab');
-          showAlreadyLoggedInModal();
+        } else if (response.type === 'ERROR' && errorText === "a user with this login is already authorized") {
+          showAlreadyLoggedInModal('User already authorized in another tab');
         } else {
           localStorage.clear();
           window.location.hash = '#login';
@@ -55,6 +54,7 @@ export function connect(url: string) {
 
   websocket.onmessage = async (event) => {
     const message: WSResponse = JSON.parse(event.data);
+    const errorText = (message as WSResponse<ErrorPayload>)?.payload?.error;
 
     ///////////////////////////////////////////
     //console.log('message от сервера', message);
@@ -170,6 +170,10 @@ export function connect(url: string) {
       }
     }
 
+    if (message.type === "ERROR") {
+      showAlreadyLoggedInModal(errorText);
+    }
+
     if (message.id && listeners[message.id]) {
       listeners[message.id](message);
       delete listeners[message.id];
@@ -239,4 +243,12 @@ function attemptReconnect() {
   reconnectTimeout = setTimeout(() => {
     connect(wsUrl);
   }, delay);
+}
+
+export async function initializeChatPage() {
+  await updateExternalUsersList();
+
+  const userEls = Array.from(document.querySelectorAll('.user-name'));
+  const usernames = userEls.map(el => el.textContent?.trim()).filter((name): name is string => !!name);
+  restoreMessageCounters(usernames);
 }

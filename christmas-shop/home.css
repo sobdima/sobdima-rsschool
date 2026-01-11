@@ -200,7 +200,7 @@ header {
   background-color: #FF4646;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png"), url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-ball.png");
+  background-image: url("./assets/img/bg-snow.png"), url("./assets/img/bg-ball.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -281,7 +281,7 @@ header {
   margin: auto;
   padding: 60px 82px;
   background-color: #FF4646;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png");
+  background-image: url("./assets/img/bg-snow.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -368,7 +368,7 @@ header {
 }
 
 .img-wrapper {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/santa.png");
+  background-image: url("./assets/img/santa.png");
   background-size: cover;
   background-position: center;
   border-radius: 20px;
@@ -390,7 +390,7 @@ header {
   flex-direction: column;
   gap: 20px;
   overflow: hidden;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png");
+  background-image: url("./assets/img/bg-snow.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -499,7 +499,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png");
+  background-image: url("./assets/img/bg-snow.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -591,7 +591,7 @@ header {
   background-color: #FF4646;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-snow.png"), url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-forest.png");
+  background-image: url("./assets/img/bg-snow.png"), url("./assets/img/bg-forest.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -909,15 +909,15 @@ header {
 }
 
 .modal__image-purple {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-work.png");
+  background-image: url("./assets/img/gift-for-work.png");
 }
 
 .modal__image-green {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-health.png");
+  background-image: url("./assets/img/gift-for-health.png");
 }
 
 .modal__image-pink {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
+  background-image: url("./assets/img/gift-for-harmony.png");
 }
 
 .modal__label {

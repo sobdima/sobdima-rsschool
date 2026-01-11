@@ -232,7 +232,7 @@ header {
   padding: 60px 82px;
   background-color: #FF4646;
   border-radius: 20px;
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/bg-garland.png");
+  background-image: url("./assets/img/bg-garland.png");
   background-position: top;
   background-repeat: no-repeat;
   background-size: contain;
@@ -587,15 +587,15 @@ header {
 }
 
 .modal__image-purple {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-work.png");
+  background-image: url("./assets/img/gift-for-work.png");
 }
 
 .modal__image-green {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-health.png");
+  background-image: url("./assets/img/gift-for-health.png");
 }
 
 .modal__image-pink {
-  background-image: url("/sobdima-JSFEEN2024Q4/christmas-shop/assets/img/gift-for-harmony.png");
+  background-image: url("./assets/img/gift-for-harmony.png");
 }
 
 .modal__label {

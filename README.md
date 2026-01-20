@@ -54,7 +54,7 @@ The project focuses on:
 - modern tooling and code quality practices
 
 **Tech stack:**  
-TypeScript, JavaScript, SCSS, Webpack, ESLint, Prettier
+TypeScript, JavaScript, SCSS, Webpack
 
 🔗 **Live demo:**  
 https://sobdima.github.io/sobdima-rsschool/fun-chat/

@@ -6,7 +6,8 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './',
+    //publicPath: './',
+    publicPath: '/',
     clean: true,
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -19,11 +20,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.css$/i,
@@ -33,19 +30,27 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/[name][hash][ext]'
-        }
-      }
+          filename: 'assets/[name][hash][ext]',
+        },
+      },
     ],
   },
   resolve: {
     extensions: ['.ts', '.js'],
   },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    historyApiFallback: true,
+    compress: true,
+    port: 3000,
+    hot: true,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
       favicon: './src/assets/icons8-chat-96.png',
-    })
+    }),
   ],
-
 };

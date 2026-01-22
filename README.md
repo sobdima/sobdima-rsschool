@@ -1,67 +1,86 @@
-This repository was created as part of my studies at **[RS School](https://rs.school/) (2024–2025)** within the **JavaScript / Front-End Development Course**.
+# 📚 RS School Projects Repository
 
-It contains several educational projects developed during the course, demonstrating my progress in frontend development, working with modern tools, and building interactive web applications.
+This repository is the result of my studies at **[RS School](https://rs.school/) (2024–2025)** as part of the **JavaScript / Front-End Development Course**.
 
---- 
+It contains several **pet projects** developed during the learning process, demonstrating my progress in frontend development, work with modern tools, and building interactive web applications.
+
+---
+
+## 🗂 Repository Structure
+
+- Each project is located in its **own branch** with the same name as the project  
+- Project deployment is configured from the **`gh-pages`** branch  
+- Live demos are available via **GitHub Pages**
+
+---
 
 ## 🚀 Featured Projects
 
-Below are some of my most successful and representative projects.
+Below are my most successful and representative projects.
 
+---
 
-### 🎄 Christmas Shop
+### 💬 Fun Chat
 
-A two-page responsive website built with a **pixel-perfect approach** according to a Figma design.
+A single-page chat application built using **WebSocket technology** for real-time communication.
 
-The project focuses on:
-- semantic and accessible HTML markup
-- adaptive layout
-- clean and structured styles
-- basic interactivity with JavaScript
+This project demonstrates:
+- client-side application architecture
+- real-time data exchange via WebSocket
+- state management and user interaction
+- modern tooling and code quality practices
 
 **Tech stack:**  
-HTML, SCSS, JavaScript
+TypeScript, JavaScript, SCSS, Webpack, WebSocket  
 
 🔗 **Live demo:**  
-https://sobdima.github.io/sobdima-rsschool/christmas-shop/home
+https://sobdima.github.io/sobdima-rsschool/fun-chat/  
+
+📂 **Source code:**  
+https://github.com/sobdima/sobdima-rsschool/tree/fun-chat/fun-chat
+
+⚠️To make the demo fully functional, the backend server (**fun-chat-server**) is deployed on **Render.com**. The backend is hosted on a free tier and may need a short time to wake up after a period of inactivity. If login fails at first, wait 20–30 seconds and try refreshing the page.
+
+📌 You can also explore the server implementation and documentation here:  
+https://github.com/sobdima/fun-chat-server
 
 ---
 
 ### 🎮 Hangman
 
-A classic word game in which you must find the correct answer by guessing letters one at a time.
+A classic word game where the player guesses a hidden word letter by letter.
 
-The project demonstrates:
+The project focuses on:
 - game logic implementation
-- user interaction handling
+- handling user interactions
 - responsive layout and styling
 
 **Tech stack:**  
 HTML, SCSS, JavaScript
 
 🔗 **Live demo:**  
-https://sobdima.github.io/sobdima-rsschool/hangman/
+https://sobdima.github.io/sobdima-rsschool/hangman/  
+
+📂 **Source code:**  
+https://github.com/sobdima/sobdima-rsschool/tree/hangman/hangman
 
 ---
 
-### 💬 Fun Chat
+### 🎄 Christmas Shop
 
-A single-page chat application built using the **WebSocket protocol** for real-time communication.
+A two-page responsive website built with a **pixel-perfect approach** based on a Figma design.
 
-The project focuses on:
-- client-side application architecture
-- real-time data exchange
-- modern tooling and code quality practices
+The project demonstrates:
+- semantic and accessible HTML markup
+- adaptive and responsive layout
+- clean, structured styles
+- basic interactivity with JavaScript
 
 **Tech stack:**  
-TypeScript, JavaScript, SCSS, Webpack
+HTML, SCSS, JavaScript
 
 🔗 **Live demo:**  
-https://sobdima.github.io/sobdima-rsschool/fun-chat/
+https://sobdima.github.io/sobdima-rsschool/christmas-shop/home  
 
-<br>   
-
-⚠️ **Note:**  
-For full functionality, the chat application requires a running server on your local machine. The server and installation/run instructions are located in a separate repository:
-https://github.com/sobdima/fun-chat-server
-
+📂 **Source code:**  
+https://github.com/sobdima/sobdima-rsschool/tree/gh-pages/christmas-shop
